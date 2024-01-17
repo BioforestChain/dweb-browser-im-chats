@@ -23,7 +23,7 @@ import (
 	dysmsapi "github.com/alibabacloud-go/dysmsapi-20170525/v2/client"
 	"github.com/alibabacloud-go/tea/tea"
 
-	"github.com/OpenIMSDK/chat/pkg/common/config"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/config"
 )
 
 func newAli() (SMS, error) {

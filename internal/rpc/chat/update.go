@@ -19,7 +19,7 @@ import (
 
 	"github.com/OpenIMSDK/tools/errs"
 
-	"github.com/OpenIMSDK/chat/pkg/proto/chat"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/chat"
 )
 
 func ToDBAttributeUpdate(req *chat.UpdateUserInfoReq) (map[string]any, error) {

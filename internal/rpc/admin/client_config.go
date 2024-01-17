@@ -21,8 +21,8 @@ import (
 
 	"github.com/OpenIMSDK/tools/errs"
 
-	"github.com/OpenIMSDK/chat/pkg/common/mctx"
-	"github.com/OpenIMSDK/chat/pkg/proto/admin"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/mctx"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/admin"
 )
 
 func (o *adminServer) GetClientConfig(ctx context.Context, req *admin.GetClientConfigReq) (*admin.GetClientConfigResp, error) {

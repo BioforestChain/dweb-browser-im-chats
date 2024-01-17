@@ -19,9 +19,9 @@ import (
 
 	"github.com/OpenIMSDK/tools/log"
 
-	"github.com/OpenIMSDK/chat/pkg/common/config"
-	"github.com/OpenIMSDK/chat/pkg/common/tokenverify"
-	"github.com/OpenIMSDK/chat/pkg/proto/admin"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/config"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/tokenverify"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/admin"
 )
 
 func (o *adminServer) CreateToken(ctx context.Context, req *admin.CreateTokenReq) (*admin.CreateTokenResp, error) {

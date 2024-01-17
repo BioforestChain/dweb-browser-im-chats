@@ -24,10 +24,10 @@ import (
 	"github.com/OpenIMSDK/tools/errs"
 	"github.com/OpenIMSDK/tools/utils"
 
-	admin2 "github.com/OpenIMSDK/chat/pkg/common/db/table/admin"
-	"github.com/OpenIMSDK/chat/pkg/common/mctx"
-	"github.com/OpenIMSDK/chat/pkg/proto/admin"
-	"github.com/OpenIMSDK/chat/pkg/proto/common"
+	admin2 "github.com/BioforestChain/dweb-browser-im-chats/pkg/common/db/table/admin"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/mctx"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/admin"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/common"
 )
 
 func (o *adminServer) AddDefaultFriend(ctx context.Context, req *admin.AddDefaultFriendReq) (*admin.AddDefaultFriendResp, error) {

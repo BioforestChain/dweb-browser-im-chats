@@ -19,7 +19,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/OpenIMSDK/chat/pkg/common/config"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/config"
 )
 
 func New() (SMS, error) {

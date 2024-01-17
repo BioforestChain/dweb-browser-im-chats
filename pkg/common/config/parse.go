@@ -26,7 +26,7 @@ import (
 	"strconv"
 	"time"
 
-	Constant "github.com/OpenIMSDK/chat/pkg/common/constant"
+	Constant "github.com/BioforestChain/dweb-browser-im-chats/pkg/common/constant"
 	"github.com/OpenIMSDK/tools/utils"
 	"gopkg.in/yaml.v3"
 )

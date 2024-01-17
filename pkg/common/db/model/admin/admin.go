@@ -18,13 +18,13 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/hex"
-	"github.com/OpenIMSDK/chat/pkg/common/constant"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/constant"
 	"time"
 
 	"github.com/OpenIMSDK/tools/log"
 
-	"github.com/OpenIMSDK/chat/pkg/common/config"
-	"github.com/OpenIMSDK/chat/pkg/common/db/table/admin"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/config"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/db/table/admin"
 	"github.com/OpenIMSDK/tools/errs"
 	"gorm.io/gorm"
 )

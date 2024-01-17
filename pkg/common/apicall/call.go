@@ -23,7 +23,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/OpenIMSDK/chat/pkg/common/constant"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/constant"
 	constant2 "github.com/OpenIMSDK/protocol/constant"
 	"github.com/OpenIMSDK/tools/errs"
 	"github.com/OpenIMSDK/tools/log"

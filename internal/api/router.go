@@ -17,7 +17,7 @@ package api
 import (
 	"context"
 
-	"github.com/OpenIMSDK/chat/pkg/common/config"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/config"
 	"github.com/OpenIMSDK/tools/discoveryregistry"
 	"github.com/gin-gonic/gin"
 )
@@ -38,6 +38,8 @@ func NewChatRoute(router gin.IRouter, discov discoveryregistry.SvcDiscoveryRegis
 	account.POST("/code/verify", chat.VerifyCode)                        // Verify the verification code
 	account.POST("/register", mw.CheckAdminOrNil, chat.RegisterUser)     // Register
 	account.POST("/login", chat.Login)                                   // Login
+	account.POST("/challenge", chat.Login)                               // Login
+	account.POST("/auth", chat.Login)                                    // Login
 	account.POST("/password/reset", chat.ResetPassword)                  // Forgot password
 	account.POST("/password/change", mw.CheckToken, chat.ChangePassword) // Change password
 

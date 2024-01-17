@@ -16,15 +16,15 @@ package chat
 
 import (
 	"context"
-	"github.com/OpenIMSDK/chat/pkg/common/config"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/config"
 	constant2 "github.com/OpenIMSDK/protocol/constant"
 	"github.com/OpenIMSDK/tools/log"
 
 	"github.com/OpenIMSDK/tools/errs"
 
-	"github.com/OpenIMSDK/chat/pkg/common/constant"
-	"github.com/OpenIMSDK/chat/pkg/common/mctx"
-	"github.com/OpenIMSDK/chat/pkg/proto/chat"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/constant"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/mctx"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/chat"
 )
 
 func (o *chatSvr) ResetPassword(ctx context.Context, req *chat.ResetPasswordReq) (*chat.ResetPasswordResp, error) {

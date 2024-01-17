@@ -26,4 +26,11 @@ type LoginResp struct {
 	UserID    string `json:"userID"`
 }
 
+type AuthResp struct {
+	Token string `json:"token"`
+}
+type ChallengeResp struct {
+	Challenge string `json:"challenge"`
+}
+
 type UpdateUserInfoResp struct{}

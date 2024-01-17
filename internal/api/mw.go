@@ -17,7 +17,7 @@ package api
 import (
 	"strconv"
 
-	"github.com/OpenIMSDK/chat/pkg/common/constant"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/constant"
 	constant2 "github.com/OpenIMSDK/protocol/constant"
 	"github.com/OpenIMSDK/tools/apiresp"
 	"github.com/OpenIMSDK/tools/errs"
@@ -25,7 +25,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc"
 
-	"github.com/OpenIMSDK/chat/pkg/proto/admin"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/admin"
 )
 
 func NewMW(adminConn grpc.ClientConnInterface) *MW {

@@ -15,7 +15,7 @@
 package admin
 
 import (
-	"github.com/OpenIMSDK/chat/pkg/common/constant"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/constant"
 	"github.com/OpenIMSDK/tools/errs"
 	"github.com/OpenIMSDK/tools/utils"
 )

@@ -17,15 +17,15 @@ package database
 import (
 	"context"
 
-	"github.com/OpenIMSDK/chat/pkg/common/db/cache"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/db/cache"
 	"github.com/OpenIMSDK/protocol/constant"
 	"github.com/redis/go-redis/v9"
 
 	"github.com/OpenIMSDK/tools/tx"
 	"gorm.io/gorm"
 
-	"github.com/OpenIMSDK/chat/pkg/common/db/model/admin"
-	table "github.com/OpenIMSDK/chat/pkg/common/db/table/admin"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/db/model/admin"
+	table "github.com/BioforestChain/dweb-browser-im-chats/pkg/common/db/table/admin"
 )
 
 type AdminDatabaseInterface interface {

@@ -19,10 +19,10 @@ import (
 
 	"github.com/OpenIMSDK/tools/discoveryregistry"
 
-	"github.com/OpenIMSDK/chat/pkg/common/config"
-	"github.com/OpenIMSDK/chat/pkg/common/mctx"
-	"github.com/OpenIMSDK/chat/pkg/eerrs"
-	"github.com/OpenIMSDK/chat/pkg/proto/admin"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/config"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/mctx"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/eerrs"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/admin"
 )
 
 func NewAdminClient(discov discoveryregistry.SvcDiscoveryRegistry) *AdminClient {

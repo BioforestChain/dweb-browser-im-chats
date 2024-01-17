@@ -18,7 +18,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/OpenIMSDK/chat/pkg/proto/chat"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/chat"
 	"github.com/OpenIMSDK/tools/errs"
 )
 

@@ -21,7 +21,7 @@ import (
 	"github.com/OpenIMSDK/tools/ormutil"
 	"gorm.io/gorm"
 
-	"github.com/OpenIMSDK/chat/pkg/common/db/table/admin"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/db/table/admin"
 )
 
 func NewRegisterAddGroup(db *gorm.DB) admin.RegisterAddGroupInterface {

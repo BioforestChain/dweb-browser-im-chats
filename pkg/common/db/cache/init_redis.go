@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/OpenIMSDK/chat/pkg/common/config"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/config"
 
 	"github.com/redis/go-redis/v9"
 

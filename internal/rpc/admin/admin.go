@@ -17,7 +17,7 @@ package admin
 import (
 	"context"
 	"fmt"
-	"github.com/OpenIMSDK/chat/pkg/common/db/cache"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/db/cache"
 	"github.com/OpenIMSDK/tools/discoveryregistry"
 	"github.com/OpenIMSDK/tools/errs"
 	"github.com/OpenIMSDK/tools/log"
@@ -27,16 +27,16 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/OpenIMSDK/chat/pkg/common/config"
-	"github.com/OpenIMSDK/chat/pkg/common/constant"
-	"github.com/OpenIMSDK/chat/pkg/common/db/database"
-	"github.com/OpenIMSDK/chat/pkg/common/db/dbutil"
-	admin2 "github.com/OpenIMSDK/chat/pkg/common/db/table/admin"
-	"github.com/OpenIMSDK/chat/pkg/common/dbconn"
-	"github.com/OpenIMSDK/chat/pkg/common/mctx"
-	"github.com/OpenIMSDK/chat/pkg/eerrs"
-	"github.com/OpenIMSDK/chat/pkg/proto/admin"
-	"github.com/OpenIMSDK/chat/pkg/rpclient/chat"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/config"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/constant"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/db/database"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/db/dbutil"
+	admin2 "github.com/BioforestChain/dweb-browser-im-chats/pkg/common/db/table/admin"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/dbconn"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/mctx"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/eerrs"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/admin"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/rpclient/chat"
 )
 
 func Start(discov discoveryregistry.SvcDiscoveryRegistry, server *grpc.Server) error {

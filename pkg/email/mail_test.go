@@ -17,7 +17,7 @@ package email
 import (
 	"context"
 	"errors"
-	"github.com/OpenIMSDK/chat/pkg/common/config"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/config"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"testing"

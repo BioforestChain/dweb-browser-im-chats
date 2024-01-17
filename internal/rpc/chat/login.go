@@ -21,7 +21,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/OpenIMSDK/chat/pkg/common/mctx"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/mctx"
 
 	constant2 "github.com/OpenIMSDK/protocol/constant"
 
@@ -30,12 +30,12 @@ import (
 	"github.com/OpenIMSDK/tools/mcontext"
 	"github.com/OpenIMSDK/tools/utils"
 
-	"github.com/OpenIMSDK/chat/pkg/common/config"
-	"github.com/OpenIMSDK/chat/pkg/common/constant"
-	"github.com/OpenIMSDK/chat/pkg/common/db/dbutil"
-	chat2 "github.com/OpenIMSDK/chat/pkg/common/db/table/chat"
-	"github.com/OpenIMSDK/chat/pkg/eerrs"
-	"github.com/OpenIMSDK/chat/pkg/proto/chat"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/config"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/constant"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/db/dbutil"
+	chat2 "github.com/BioforestChain/dweb-browser-im-chats/pkg/common/db/table/chat"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/eerrs"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/chat"
 )
 
 func (o *chatSvr) verifyCodeJoin(areaCode, phoneNumber string) string {

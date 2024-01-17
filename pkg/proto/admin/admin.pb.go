@@ -22,7 +22,7 @@ package admin
 
 import (
 	context "context"
-	common "github.com/OpenIMSDK/chat/pkg/proto/common"
+	common "github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/common"
 	sdkws "github.com/OpenIMSDK/protocol/sdkws"
 	wrapperspb "github.com/OpenIMSDK/protocol/wrapperspb"
 	grpc "google.golang.org/grpc"

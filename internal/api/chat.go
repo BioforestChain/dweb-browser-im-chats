@@ -20,10 +20,10 @@ import (
 	"net"
 	"time"
 
-	"github.com/OpenIMSDK/chat/pkg/common/apicall"
-	"github.com/OpenIMSDK/chat/pkg/common/apistruct"
-	constant2 "github.com/OpenIMSDK/chat/pkg/common/constant"
-	"github.com/OpenIMSDK/chat/pkg/common/mctx"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/apicall"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/apistruct"
+	constant2 "github.com/BioforestChain/dweb-browser-im-chats/pkg/common/constant"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/mctx"
 	"github.com/OpenIMSDK/protocol/sdkws"
 	"github.com/OpenIMSDK/tools/checker"
 	"github.com/OpenIMSDK/tools/log"
@@ -35,9 +35,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc"
 
-	"github.com/OpenIMSDK/chat/pkg/common/config"
-	"github.com/OpenIMSDK/chat/pkg/proto/admin"
-	"github.com/OpenIMSDK/chat/pkg/proto/chat"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/config"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/admin"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/chat"
 )
 
 func NewChat(chatConn, adminConn grpc.ClientConnInterface) *ChatApi {
@@ -139,6 +139,34 @@ func (o *ChatApi) RegisterUser(c *gin.Context) {
 	apiresp.GinSuccess(c, &resp)
 }
 
+func (o *ChatApi) Challenge(c *gin.Context) {
+	var resp apistruct.ChallengeResp
+
+	req.Ip = ip
+	resp1, err := o.chatClient.Login(c, &req)
+	if err != nil {
+		apiresp.GinError(c, err)
+		return
+	}
+	imToken, err := o.imApiCaller.UserToken(c, resp1.UserID, req.Platform)
+
+	if err != nil {
+		apiresp.GinError(c, err)
+		return
+	}
+	resp.ImToken = imToken
+	resp.UserID = resp1.UserID
+	resp.ChatToken = resp1.ChatToken
+	apiresp.GinSuccess(c, resp)
+}
+func (o *ChatApi) Auth(c *gin.Context) {
+	var (
+		req  chat.UpdateUserInfoReq
+		resp apistruct.AuthResp
+	)
+
+	apiresp.GinSuccess(c, resp)
+}
 func (o *ChatApi) Login(c *gin.Context) {
 	var (
 		req  chat.LoginReq

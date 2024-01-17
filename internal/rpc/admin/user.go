@@ -19,8 +19,7 @@ import (
 	"strings"
 	"time"
 
-
-	"github.com/OpenIMSDK/chat/pkg/common/constant"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/constant"
 	"github.com/OpenIMSDK/tools/log"
 
 	"github.com/OpenIMSDK/protocol/wrapperspb"
@@ -28,11 +27,11 @@ import (
 	"github.com/OpenIMSDK/tools/mcontext"
 	"github.com/OpenIMSDK/tools/utils"
 
-	"github.com/OpenIMSDK/chat/pkg/common/db/dbutil"
-	admin2 "github.com/OpenIMSDK/chat/pkg/common/db/table/admin"
-	"github.com/OpenIMSDK/chat/pkg/common/mctx"
-	"github.com/OpenIMSDK/chat/pkg/proto/admin"
-	"github.com/OpenIMSDK/chat/pkg/proto/chat"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/db/dbutil"
+	admin2 "github.com/BioforestChain/dweb-browser-im-chats/pkg/common/db/table/admin"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/mctx"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/admin"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/chat"
 )
 
 func (o *adminServer) CancellationUser(ctx context.Context, req *admin.CancellationUserReq) (*admin.CancellationUserResp, error) {

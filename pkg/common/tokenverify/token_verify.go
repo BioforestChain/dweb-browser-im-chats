@@ -17,8 +17,8 @@ package tokenverify
 import (
 	"time"
 
-	"github.com/OpenIMSDK/chat/pkg/common/config"
-	"github.com/OpenIMSDK/chat/pkg/common/constant"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/config"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/constant"
 	"github.com/OpenIMSDK/tools/errs"
 	"github.com/golang-jwt/jwt/v4"
 )

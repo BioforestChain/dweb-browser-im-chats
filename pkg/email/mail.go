@@ -17,7 +17,7 @@ package email
 import (
 	"context"
 	"fmt"
-	"github.com/OpenIMSDK/chat/pkg/common/config"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/config"
 	"github.com/OpenIMSDK/tools/errs"
 	"gopkg.in/gomail.v2"
 )

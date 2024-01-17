@@ -15,7 +15,7 @@
 package apicall
 
 import (
-	"github.com/OpenIMSDK/chat/pkg/common/config"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/config"
 	"github.com/OpenIMSDK/protocol/auth"
 	"github.com/OpenIMSDK/protocol/friend"
 	"github.com/OpenIMSDK/protocol/group"

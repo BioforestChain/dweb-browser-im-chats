@@ -21,7 +21,7 @@ import (
 
 	"github.com/OpenIMSDK/tools/errs"
 
-	"github.com/OpenIMSDK/chat/pkg/proto/admin"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/admin"
 )
 
 type Admin struct {

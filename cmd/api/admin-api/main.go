@@ -21,16 +21,16 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/OpenIMSDK/chat/pkg/discovery_register"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/discovery_register"
 
-	"github.com/OpenIMSDK/chat/tools/component"
+	"github.com/BioforestChain/dweb-browser-im-chats/tools/component"
 	"github.com/OpenIMSDK/tools/discoveryregistry"
 
-	mw2 "github.com/OpenIMSDK/chat/pkg/common/mw"
-	"github.com/OpenIMSDK/chat/pkg/common/version"
+	mw2 "github.com/BioforestChain/dweb-browser-im-chats/pkg/common/mw"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/version"
 
-	"github.com/OpenIMSDK/chat/internal/api"
-	"github.com/OpenIMSDK/chat/pkg/common/config"
+	"github.com/BioforestChain/dweb-browser-im-chats/internal/api"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/config"
 	"github.com/OpenIMSDK/tools/log"
 	"github.com/OpenIMSDK/tools/mw"
 	"google.golang.org/grpc"

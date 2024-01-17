@@ -24,7 +24,7 @@ import (
 
 	"github.com/OpenIMSDK/protocol/constant"
 
-	"github.com/OpenIMSDK/chat/pkg/common/config"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/config"
 	"github.com/OpenIMSDK/tools/errs"
 	"github.com/OpenIMSDK/tools/log"
 	"github.com/go-zookeeper/zk"

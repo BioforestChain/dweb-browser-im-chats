@@ -18,7 +18,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/OpenIMSDK/chat/pkg/proto/chat"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/chat"
 )
 
 func (*chatSvr) AddSignalRecord(ctx context.Context, req *chat.AddSignalRecordReq) (*chat.AddSignalRecordResp, error) {

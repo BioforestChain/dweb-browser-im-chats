@@ -25,11 +25,11 @@ import (
 	"github.com/OpenIMSDK/tools/utils"
 	"github.com/google/uuid"
 
-	"github.com/OpenIMSDK/chat/pkg/common/constant"
-	admin2 "github.com/OpenIMSDK/chat/pkg/common/db/table/admin"
-	"github.com/OpenIMSDK/chat/pkg/common/mctx"
-	"github.com/OpenIMSDK/chat/pkg/proto/admin"
-	"github.com/OpenIMSDK/chat/pkg/proto/common"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/constant"
+	admin2 "github.com/BioforestChain/dweb-browser-im-chats/pkg/common/db/table/admin"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/mctx"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/admin"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/common"
 )
 
 func (o *adminServer) AddApplet(ctx context.Context, req *admin.AddAppletReq) (*admin.AddAppletResp, error) {

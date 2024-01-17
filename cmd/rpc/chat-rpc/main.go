@@ -19,13 +19,13 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/OpenIMSDK/chat/pkg/common/chatrpcstart"
-	"github.com/OpenIMSDK/chat/tools/component"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/chatrpcstart"
+	"github.com/BioforestChain/dweb-browser-im-chats/tools/component"
 	"github.com/OpenIMSDK/tools/log"
 
-	"github.com/OpenIMSDK/chat/internal/rpc/chat"
-	"github.com/OpenIMSDK/chat/pkg/common/config"
-	"github.com/OpenIMSDK/chat/pkg/common/version"
+	"github.com/BioforestChain/dweb-browser-im-chats/internal/rpc/chat"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/config"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/version"
 )
 
 func main() {

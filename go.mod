@@ -1,6 +1,6 @@
-module github.com/OpenIMSDK/chat
+module github.com/BioforestChain/dweb-browser-im-chats
 
-go 1.19
+go 1.20
 
 require (
 	github.com/gin-gonic/gin v1.9.1
@@ -75,6 +75,7 @@ require (
 	github.com/pelletier/go-toml/v2 v2.0.8 // indirect
 	github.com/richardlehane/mscfb v1.0.4 // indirect
 	github.com/richardlehane/msoleps v1.0.3 // indirect
+	github.com/satori/go.uuid v1.2.0 // indirect
 	github.com/tjfoc/gmsm v1.3.2 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.11 // indirect

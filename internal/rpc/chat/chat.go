@@ -15,18 +15,18 @@
 package chat
 
 import (
-	"github.com/OpenIMSDK/chat/pkg/common/apicall"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/apicall"
 	"github.com/OpenIMSDK/tools/discoveryregistry"
 	"google.golang.org/grpc"
 
-	"github.com/OpenIMSDK/chat/pkg/common/config"
-	"github.com/OpenIMSDK/chat/pkg/common/db/database"
-	chat2 "github.com/OpenIMSDK/chat/pkg/common/db/table/chat"
-	"github.com/OpenIMSDK/chat/pkg/common/dbconn"
-	"github.com/OpenIMSDK/chat/pkg/email"
-	"github.com/OpenIMSDK/chat/pkg/proto/chat"
-	chatClient "github.com/OpenIMSDK/chat/pkg/rpclient/chat"
-	"github.com/OpenIMSDK/chat/pkg/sms"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/config"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/db/database"
+	chat2 "github.com/BioforestChain/dweb-browser-im-chats/pkg/common/db/table/chat"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/dbconn"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/email"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/chat"
+	chatClient "github.com/BioforestChain/dweb-browser-im-chats/pkg/rpclient/chat"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/sms"
 )
 
 func Start(discov discoveryregistry.SvcDiscoveryRegistry, server *grpc.Server) error {

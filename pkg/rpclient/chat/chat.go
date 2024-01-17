@@ -21,9 +21,9 @@ import (
 	"github.com/OpenIMSDK/tools/errs"
 	"github.com/OpenIMSDK/tools/utils"
 
-	"github.com/OpenIMSDK/chat/pkg/common/config"
-	"github.com/OpenIMSDK/chat/pkg/proto/chat"
-	"github.com/OpenIMSDK/chat/pkg/proto/common"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/config"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/chat"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/common"
 )
 
 func NewChatClient(discov discoveryregistry.SvcDiscoveryRegistry) *ChatClient {

@@ -19,9 +19,9 @@ import (
 	"net"
 	"strconv"
 
-	"github.com/OpenIMSDK/chat/pkg/common/config"
-	chatMw "github.com/OpenIMSDK/chat/pkg/common/mw"
-	"github.com/OpenIMSDK/chat/pkg/discovery_register"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/config"
+	chatMw "github.com/BioforestChain/dweb-browser-im-chats/pkg/common/mw"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/discovery_register"
 	"github.com/OpenIMSDK/tools/discoveryregistry"
 	"github.com/OpenIMSDK/tools/errs"
 	"github.com/OpenIMSDK/tools/mw"

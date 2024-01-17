@@ -21,7 +21,7 @@ import (
 	"github.com/OpenIMSDK/tools/ormutil"
 	"gorm.io/gorm"
 
-	"github.com/OpenIMSDK/chat/pkg/common/db/table/chat"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/db/table/chat"
 )
 
 func NewAttribute(db *gorm.DB) chat.AttributeInterface {

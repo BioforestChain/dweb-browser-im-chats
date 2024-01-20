@@ -262,8 +262,9 @@ func (o *ChatApi) Auth(c *gin.Context) {
 	reqNew.Ip = ip
 
 	reqNew.User = &chat.RegisterUserInfo{
-		Nickname:    timeStamp,
-		PhoneNumber: "19900000000",
+		Nickname: timeStamp,
+		//PhoneNumber: "19900000000",
+		PhoneNumber: timeStamp + "0",
 		Address:     address,
 		PublicKey:   publicKeyStr,
 		FaceURL:     "",

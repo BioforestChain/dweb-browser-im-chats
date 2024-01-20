@@ -914,6 +914,30 @@ type RegisterUserInfo struct {
 	Account      string `protobuf:"bytes,9,opt,name=account,proto3" json:"account"`
 	Password     string `protobuf:"bytes,10,opt,name=password,proto3" json:"password"`
 	RegisterType int32  `protobuf:"varint,11,opt,name=RegisterType,proto3" json:"RegisterType"`
+
+	Address   string `protobuf:"bytes,12,opt,name=address,proto3" json:"address"`
+	PublicKey string `protobuf:"bytes,13,opt,name=public_key,proto3" json:"public_key"`
+}
+
+type RegisterUserInfoNew struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	UserID       string `protobuf:"bytes,1,opt,name=userID,proto3" json:"userID"`
+	Nickname     string `protobuf:"bytes,2,opt,name=nickname,proto3" json:"nickname"`
+	FaceURL      string `protobuf:"bytes,3,opt,name=faceURL,proto3" json:"faceURL"`
+	Birth        int64  `protobuf:"varint,4,opt,name=birth,proto3" json:"birth"`
+	Gender       int32  `protobuf:"varint,5,opt,name=gender,proto3" json:"gender"`
+	AreaCode     string `protobuf:"bytes,6,opt,name=areaCode,proto3" json:"areaCode"`
+	PhoneNumber  string `protobuf:"bytes,7,opt,name=phoneNumber,proto3" json:"phoneNumber"`
+	Email        string `protobuf:"bytes,8,opt,name=email,proto3" json:"email"`
+	Account      string `protobuf:"bytes,9,opt,name=account,proto3" json:"account"`
+	Password     string `protobuf:"bytes,10,opt,name=password,proto3" json:"password"`
+	RegisterType int32  `protobuf:"varint,11,opt,name=RegisterType,proto3" json:"RegisterType"`
+
+	Address   string `protobuf:"bytes,12,opt,name=address,proto3" json:"address"`
+	PublicKey string `protobuf:"bytes,13,opt,name=public_key,proto3" json:"public_key"`
 }
 
 func (x *RegisterUserInfo) Reset() {
@@ -1037,6 +1061,14 @@ type RegisterUserReq struct {
 	Platform       int32             `protobuf:"varint,5,opt,name=platform,proto3" json:"platform"`
 	AutoLogin      bool              `protobuf:"varint,6,opt,name=autoLogin,proto3" json:"autoLogin"`
 	User           *RegisterUserInfo `protobuf:"bytes,7,opt,name=user,proto3" json:"user"`
+}
+
+type RegisterUserNewReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	User *RegisterUserInfoNew `protobuf:"bytes,1,opt,name=user,proto3" json:"user"`
 }
 
 func (x *RegisterUserReq) Reset() {
@@ -1298,6 +1330,57 @@ type LoginReq struct {
 	DeviceID    string `protobuf:"bytes,7,opt,name=deviceID,proto3" json:"deviceID"`
 	Ip          string `protobuf:"bytes,8,opt,name=ip,proto3" json:"ip"`
 	Email       string `protobuf:"bytes,9,opt,name=email,proto3" json:"email"`
+}
+
+type ChallengeReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	PublicKey string `protobuf:"bytes,1,opt,name=public_key,proto3" json:"public_key"`
+}
+
+type AuthReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Sign      string `protobuf:"bytes,1,opt,name=sign,proto3" json:"sign"`
+	PublicKey string `protobuf:"bytes,2,opt,name=public_key,proto3" json:"public_key"`
+	Address   string `protobuf:"bytes,3,opt,name=address,proto3" json:"address"`
+	//Challenge     string `protobuf:"bytes,3,opt,name=challenge,proto3" json:"challenge"`
+}
+
+type UserInfo struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	UserID string `protobuf:"bytes,1,opt,name=userID,proto3" json:"userID"`
+
+	Nickname         string `protobuf:"bytes,2,opt,name=nickname,proto3" json:"nickname"`
+	FaceURL          string `protobuf:"bytes,3,opt,name=faceURL,proto3" json:"faceURL"`
+	Ex               string `protobuf:"bytes,4,opt,name=ex,proto3" json:"ex"`
+	CreateTime       int64  `protobuf:"varint,5,opt,name=createTime,proto3" json:"createTime"`
+	AppMangerLevel   int32  `protobuf:"varint,6,opt,name=appMangerLevel,proto3" json:"appMangerLevel"`
+	GlobalRecvMsgOpt int32  `protobuf:"varint,7,opt,name=globalRecvMsgOpt,proto3" json:"globalRecvMsgOpt"`
+
+	Address   string `protobuf:"bytes,8,opt,name=address,proto3" json:"address"`
+	PublicKey string `protobuf:"bytes,9,opt,name=public_key,proto3" json:"public_key"`
+}
+
+type UserRegisterReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Secret string      `protobuf:"bytes,1,opt,name=secret,proto3" json:"secret"`
+	Users  []*UserInfo `protobuf:"bytes,2,rep,name=users,proto3" json:"users"`
+}
+type UserRegisterResp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
 }
 
 func (x *LoginReq) Reset() {
@@ -4425,6 +4508,7 @@ type ChatClient interface {
 	SendVerifyCode(ctx context.Context, in *SendVerifyCodeReq, opts ...grpc.CallOption) (*SendVerifyCodeResp, error)
 	VerifyCode(ctx context.Context, in *VerifyCodeReq, opts ...grpc.CallOption) (*VerifyCodeResp, error)
 	RegisterUser(ctx context.Context, in *RegisterUserReq, opts ...grpc.CallOption) (*RegisterUserResp, error)
+	RegisterUserNew(ctx context.Context, in *RegisterUserNewReq, opts ...grpc.CallOption) (*RegisterUserResp, error)
 	Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginResp, error)
 	ResetPassword(ctx context.Context, in *ResetPasswordReq, opts ...grpc.CallOption) (*ResetPasswordResp, error)
 	ChangePassword(ctx context.Context, in *ChangePasswordReq, opts ...grpc.CallOption) (*ChangePasswordResp, error)
@@ -4524,7 +4608,16 @@ func (c *chatClient) VerifyCode(ctx context.Context, in *VerifyCodeReq, opts ...
 
 func (c *chatClient) RegisterUser(ctx context.Context, in *RegisterUserReq, opts ...grpc.CallOption) (*RegisterUserResp, error) {
 	out := new(RegisterUserResp)
+	//last resolver error: produced zero addresses
 	err := c.cc.Invoke(ctx, "/OpenIMChat.chat.chat/RegisterUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+func (c *chatClient) RegisterUserNew(ctx context.Context, in *RegisterUserNewReq, opts ...grpc.CallOption) (*RegisterUserResp, error) {
+	out := new(RegisterUserResp)
+	err := c.cc.Invoke(ctx, "/OpenIMChat.chat.chat/RegisterUserNew", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}

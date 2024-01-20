@@ -115,6 +115,12 @@ message RegisterUserInfo {
   string account = 9;
   string password = 10;
   int32 RegisterType = 11;
+  //Address       string `protobuf:"bytes,12,opt,name=address,proto3" json:"address"`
+  //	PublicKey     string `protobuf:"bytes,13,opt,name=public_key,proto3" json:"public_key"`
+
+  string address = 12;
+  string public_key = 13;
+
 }
 
 message RegisterUserReq {
@@ -125,6 +131,10 @@ message RegisterUserReq {
   int32 platform = 5;
   bool autoLogin = 6;
   RegisterUserInfo user = 7;
+}
+
+message RegisterUserNewReq {
+  RegisterUserInfo user = 1;
 }
 
 message RegisterUserResp {
@@ -327,6 +337,7 @@ service chat {
   rpc SendVerifyCode(SendVerifyCodeReq) returns(SendVerifyCodeResp);
   rpc VerifyCode(VerifyCodeReq) returns(VerifyCodeResp);
   rpc RegisterUser(RegisterUserReq) returns(RegisterUserResp);
+  rpc RegisterUserNew(RegisterUserNewReq) returns(RegisterUserResp);
   rpc Login(LoginReq) returns(LoginResp);
   rpc ResetPassword(ResetPasswordReq) returns(ResetPasswordResp);
   rpc ChangePassword(ChangePasswordReq) returns(ChangePasswordResp);

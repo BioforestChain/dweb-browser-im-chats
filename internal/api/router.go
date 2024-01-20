@@ -38,8 +38,8 @@ func NewChatRoute(router gin.IRouter, discov discoveryregistry.SvcDiscoveryRegis
 	account.POST("/code/verify", chat.VerifyCode)                        // Verify the verification code
 	account.POST("/register", mw.CheckAdminOrNil, chat.RegisterUser)     // Register
 	account.POST("/login", chat.Login)                                   // Login
-	account.POST("/challenge", chat.Login)                               // Login
-	account.POST("/auth", chat.Login)                                    // Login
+	account.POST("/challenge", chat.Challenge)                           // Challenge
+	account.POST("/auth", chat.Auth)                                     // Auth
 	account.POST("/password/reset", chat.ResetPassword)                  // Forgot password
 	account.POST("/password/change", mw.CheckToken, chat.ChangePassword) // Change password
 

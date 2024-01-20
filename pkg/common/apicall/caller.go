@@ -16,6 +16,7 @@ package apicall
 
 import (
 	"context"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/chat"
 	"github.com/OpenIMSDK/tools/log"
 	"sync"
 	"time"
@@ -37,6 +38,7 @@ type CallerInterface interface {
 	UpdateUserInfo(ctx context.Context, userID string, nickName string, faceURL string) error
 	ForceOffLine(ctx context.Context, userID string) error
 	RegisterUser(ctx context.Context, users []*sdkws.UserInfo) error
+	RegisterUserNew(ctx context.Context, users []*chat.UserInfo) error
 	FindGroupInfo(ctx context.Context, groupIDs []string) ([]*sdkws.GroupInfo, error)
 	UserRegisterCount(ctx context.Context, start int64, end int64) (map[string]int64, int64, error)
 	FriendUserIDs(ctx context.Context, userID string) ([]string, error)
@@ -114,6 +116,13 @@ func (c *Caller) UpdateUserInfo(ctx context.Context, userID string, nickName str
 
 func (c *Caller) RegisterUser(ctx context.Context, users []*sdkws.UserInfo) error {
 	_, err := registerUser.Call(ctx, &user.UserRegisterReq{
+		Secret: *config.Config.Secret,
+		Users:  users,
+	})
+	return err
+}
+func (c *Caller) RegisterUserNew(ctx context.Context, users []*chat.UserInfo) error {
+	_, err := registerUserNew.Call(ctx, &chat.UserRegisterReq{
 		Secret: *config.Config.Secret,
 		Users:  users,
 	})

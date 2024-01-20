@@ -26,6 +26,8 @@ type Account struct {
 	CreateTime     time.Time `gorm:"column:create_time;autoCreateTime"`
 	ChangeTime     time.Time `gorm:"column:change_time;autoUpdateTime"`
 	OperatorUserID string    `gorm:"column:operator_user_id;type:varchar(64)"`
+	Address        string    `gorm:"column:address;type:varchar(512)"`
+	PublicKey      string    `gorm:"column:public_key;type:text"`
 }
 
 func (Account) TableName() string {

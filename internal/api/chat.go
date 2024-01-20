@@ -15,7 +15,10 @@
 package api
 
 import (
+	"context"
 	"fmt"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/db/cache"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/sign"
 	"io"
 	"net"
 	"time"
@@ -24,6 +27,8 @@ import (
 	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/apistruct"
 	constant2 "github.com/BioforestChain/dweb-browser-im-chats/pkg/common/constant"
 	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/mctx"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/util/hash"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/util/number"
 	"github.com/OpenIMSDK/protocol/sdkws"
 	"github.com/OpenIMSDK/tools/checker"
 	"github.com/OpenIMSDK/tools/log"
@@ -77,6 +82,11 @@ func (o *ChatApi) VerifyCode(c *gin.Context) {
 	a2r.Call(chat.ChatClient.VerifyCode, o.chatClient, c)
 }
 
+// RegisterUser
+//
+//	@Description: 原系统注册流程，注册用户
+//	@receiver o
+//	@param c
 func (o *ChatApi) RegisterUser(c *gin.Context) {
 	var (
 		req  chat.RegisterUserReq
@@ -139,32 +149,169 @@ func (o *ChatApi) RegisterUser(c *gin.Context) {
 	apiresp.GinSuccess(c, &resp)
 }
 
+// Challenge
+//
+//	@Description: 下发给前端一个验证码（挑战，类uuid）
+//	@receiver o
+//	@param c
 func (o *ChatApi) Challenge(c *gin.Context) {
-	var resp apistruct.ChallengeResp
+	var (
+		req  chat.ChallengeReq
+		resp apistruct.ChallengeResp
+	)
+	if err := c.BindJSON(&req); err != nil {
+		apiresp.GinError(c, err)
+		return
+	}
+	log.ZInfo(c, "Challenge", "req", &req)
+	if req.PublicKey == "" {
+		apiresp.GinError(c, errs.ErrArgs.Wrap("public_key field is required")) // 参数校验失败
+		return
+	}
+	if err := checker.Validate(&req); err != nil {
+		apiresp.GinError(c, err) // 参数校验失败
+		return
+	}
+	publicKey := req.PublicKey
+	publicKeyMd5 := hash.Md5(publicKey)
+	challenge := number.GenerateTraceId()
 
-	req.Ip = ip
-	resp1, err := o.chatClient.Login(c, &req)
+	rdb, err := cache.NewRedis()
 	if err != nil {
 		apiresp.GinError(c, err)
 		return
 	}
-	imToken, err := o.imApiCaller.UserToken(c, resp1.UserID, req.Platform)
+	ca := cache.NewTokenInterface(rdb)
+	ca.AddTraceId(context.Background(), publicKeyMd5, challenge)
 
-	if err != nil {
-		apiresp.GinError(c, err)
-		return
-	}
-	resp.ImToken = imToken
-	resp.UserID = resp1.UserID
-	resp.ChatToken = resp1.ChatToken
+	ca.GetTraceId(context.Background(), publicKeyMd5)
+
+	resp.Challenge = challenge
 	apiresp.GinSuccess(c, resp)
 }
+
+// Auth
+//
+//	@Description: 为前端进行验签操作，并下发token
+//	@receiver o
+//	@param c
 func (o *ChatApi) Auth(c *gin.Context) {
 	var (
-		req  chat.UpdateUserInfoReq
-		resp apistruct.AuthResp
+		req       chat.AuthReq
+		resp      apistruct.AuthResp
+		tmpUserId string
+		//reqNew    chat.RegisterUserNewReq
+		reqNew chat.RegisterUserReq
 	)
+	if err := c.BindJSON(&req); err != nil {
+		apiresp.GinError(c, err)
+		return
+	}
+	log.ZInfo(c, "Auth", "req", &req)
 
+	if err := checker.Validate(&req); err != nil {
+		apiresp.GinError(c, err) // 参数校验失败
+		return
+	}
+
+	signature := req.Sign
+	publicKeyStr := req.PublicKey
+	address := req.Address
+
+	publicKey := req.PublicKey
+	publicKeyMd5 := hash.Md5(publicKey)
+	rdb, err := cache.NewRedis()
+	if err != nil {
+		apiresp.GinError(c, err)
+		return
+	}
+	ca := cache.NewTokenInterface(rdb)
+	challenge, err := ca.GetTraceId(context.Background(), publicKeyMd5)
+	if challenge == "" {
+		apiresp.GinError(c, errs.ErrArgs.Wrap("challenge void")) // 参数校验失败
+		return
+	}
+	if address == "" {
+		apiresp.GinError(c, errs.ErrArgs.Wrap("address void")) // 参数校验失败
+		return
+	}
+	verSign := sign.VerifySign(challenge, signature, publicKeyStr)
+	if !verSign {
+		apiresp.GinError(c, errs.ErrArgs.Wrap("sign validation failed error "))
+		return
+	}
+
+	// insert into db (gorm )
+	// 1. address 明文
+	// 2. pub_key
+	// TODO imToken or chatToken
+	// 3. token chatToken
+	//req  chat.UserInfo
+	//
+	reqNew.VerifyCode = "666666"
+	//"platform": 5
+	reqNew.Platform = constant.WebPlatformID
+	reqNew.AutoLogin = true
+	timeStamp := fmt.Sprintf("%d", time.Now().Unix())
+
+	ip, err := o.getClientIP(c)
+	if err != nil {
+		apiresp.GinError(c, err)
+		return
+	}
+	reqNew.Ip = ip
+
+	reqNew.User = &chat.RegisterUserInfo{
+		Nickname:    timeStamp,
+		PhoneNumber: "19900000000",
+		Address:     address,
+		PublicKey:   publicKeyStr,
+		FaceURL:     "",
+		AreaCode:    "+86",
+		Password:    "df10ef8509dc176d733d59549e7dbfaf",
+		//        "faceURL": "",
+		//        "areaCode": "+86",
+		//        "phoneNumber": "13912345678",
+		//        "password": "df10ef8509dc176d733d59549e7dbfaf",
+	}
+
+	respRegisterUser, err := o.chatClient.RegisterUser(c, &reqNew)
+	if respRegisterUser == nil {
+		tmpUserId = timeStamp
+	} else {
+		tmpUserId = respRegisterUser.UserID
+	}
+
+	userInfo := &chat.UserInfo{
+		//UserID:     tmp,
+		UserID:     tmpUserId,
+		Nickname:   tmpUserId,
+		CreateTime: time.Now().UnixMilli(),
+		Address:    address,
+		PublicKey:  publicKeyStr,
+	}
+	err = o.imApiCaller.RegisterUserNew(c, []*chat.UserInfo{userInfo})
+	if err != nil {
+		apiresp.GinError(c, err)
+		return
+	}
+	//tmpUserId = userInfo.UserID
+	// 目前根据旧账号系统登录后，使用 Header Token: imToken
+	//resp.ChatToken = respRegisterUser.ChatToken
+
+	imToken, err := o.imApiCaller.UserToken(c, tmpUserId, constant.WebPlatformID)
+	if err != nil {
+		apiresp.GinError(c, err)
+		return
+	}
+	// TODO 联调
+	if imToken == "" {
+		imToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOiIxMjg0ODY5NjI1IiwiUGxhdGZvcm1JRCI6NSwiZXhwIjoxNzEzMjYxMDU5LCJuYmYiOjE3MDU0ODQ3NTksImlhdCI6MTcwNTQ4NTA1OX0.uensQi2oQM6L2wNKroegGWpvlqlSGkfnr6HRqlgm-ZU"
+	}
+
+	resp.Token = imToken
+
+	log.ZInfo(c, "Auth resp: ", "resp", resp)
 	apiresp.GinSuccess(c, resp)
 }
 func (o *ChatApi) Login(c *gin.Context) {

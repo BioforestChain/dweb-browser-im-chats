@@ -299,3 +299,11 @@ func (o *AdminDatabase) CacheToken(ctx context.Context, userID string, token str
 func (o *AdminDatabase) GetTokens(ctx context.Context, userID string) (map[string]int32, error) {
 	return o.cache.GetTokensWithoutError(ctx, userID)
 }
+
+func (o *AdminDatabase) CacheTraceId(ctx context.Context, field, trace string) error {
+	return o.cache.AddTraceId(ctx, field, trace)
+}
+
+func (o *AdminDatabase) CacheGetTraceId(ctx context.Context, member string) (string, error) {
+	return o.cache.GetTraceId(ctx, member)
+}

@@ -24,11 +24,14 @@ import (
 
 const (
 	chatToken = "CHAT_UID_TOKEN_STATUS:"
+	traceId   = "PUB_KEY_CHALLENGE:"
 )
 
 type TokenInterface interface {
 	AddTokenFlag(ctx context.Context, userID string, token string, flag int) error
 	GetTokensWithoutError(ctx context.Context, userID string) (map[string]int32, error)
+	AddTraceId(ctx context.Context, field, trace string) error
+	GetTraceId(ctx context.Context, member string) (string, error)
 }
 
 type TokenCacheRedis struct {
@@ -55,4 +58,25 @@ func (t *TokenCacheRedis) GetTokensWithoutError(ctx context.Context, userID stri
 		mm[k] = utils.StringToInt32(v)
 	}
 	return mm, nil
+}
+
+func (t *TokenCacheRedis) AddTraceId(ctx context.Context, field, trace string) error {
+	keyPrefix := traceId
+	//return errs.Wrap(t.rdb.SAdd(ctx, key, trace).Err())
+	return errs.Wrap(t.rdb.HSet(ctx, keyPrefix, field, trace).Err())
+}
+
+func (t *TokenCacheRedis) GetTraceId(ctx context.Context, field string) (string, error) {
+	keyPrefix := traceId
+	//return errs.Wrap(t.rdb.SAdd(ctx, key, trace).Err())
+	res, err := t.rdb.HGet(ctx, keyPrefix, field).Result()
+	if err != nil {
+		return "", errs.Wrap(err)
+	}
+	return res, nil
+}
+
+func (t *TokenCacheRedis) SIsMemberTraceId(ctx context.Context, member string) error {
+	key := traceId
+	return errs.Wrap(t.rdb.SIsMember(ctx, key, member).Err())
 }

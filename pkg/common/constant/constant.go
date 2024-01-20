@@ -189,3 +189,7 @@ const (
 	EmailRegister = 1
 	PhoneRegister = 2
 )
+
+const (
+	LenRandomNum = 6
+)

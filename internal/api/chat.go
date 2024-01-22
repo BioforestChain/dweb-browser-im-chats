@@ -21,6 +21,7 @@ import (
 	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/sign"
 	"io"
 	"net"
+	"strconv"
 	"time"
 
 	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/apicall"
@@ -165,7 +166,7 @@ func (o *ChatApi) Challenge(c *gin.Context) {
 	}
 	log.ZInfo(c, "Challenge", "req", &req)
 	if req.PublicKey == "" {
-		apiresp.GinError(c, errs.ErrArgs.Wrap("public_key field is required")) // 参数校验失败
+		apiresp.GinError(c, errs.ErrArgs.Wrap("publicKey field is required")) // 参数校验失败
 		return
 	}
 	if err := checker.Validate(&req); err != nil {
@@ -174,19 +175,20 @@ func (o *ChatApi) Challenge(c *gin.Context) {
 	}
 	publicKey := req.PublicKey
 	publicKeyMd5 := hash.Md5(publicKey)
-	challenge := number.GenerateTraceId()
-
+	//challenge := number.GenerateTraceId()
+	challenge := number.GetRandNum(constant2.LenRandomNum)
+	challengeStr := strconv.Itoa(challenge)
 	rdb, err := cache.NewRedis()
 	if err != nil {
 		apiresp.GinError(c, err)
 		return
 	}
 	ca := cache.NewTokenInterface(rdb)
-	ca.AddTraceId(context.Background(), publicKeyMd5, challenge)
+	ca.AddTraceId(context.Background(), publicKeyMd5, challengeStr)
 
 	ca.GetTraceId(context.Background(), publicKeyMd5)
 
-	resp.Challenge = challenge
+	resp.Challenge = challengeStr
 	apiresp.GinSuccess(c, resp)
 }
 
@@ -242,12 +244,8 @@ func (o *ChatApi) Auth(c *gin.Context) {
 	// insert into db (gorm )
 	// 1. address 明文
 	// 2. pub_key
-	// TODO imToken or chatToken
-	// 3. token chatToken
-	//req  chat.UserInfo
-	//
+	// 3. token imToken
 	reqNew.VerifyCode = "666666"
-	//"platform": 5
 	reqNew.Platform = constant.WebPlatformID
 	reqNew.AutoLogin = true
 	timeStamp := fmt.Sprintf("%d", time.Now().Unix())

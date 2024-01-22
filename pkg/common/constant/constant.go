@@ -191,5 +191,5 @@ const (
 )
 
 const (
-	LenRandomNum = 6
+	LenRandomNum = 1000000
 )

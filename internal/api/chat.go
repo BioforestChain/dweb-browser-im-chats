@@ -152,7 +152,7 @@ func (o *ChatApi) RegisterUser(c *gin.Context) {
 
 // Challenge
 //
-//	@Description: 下发给前端一个验证码（挑战，类uuid）
+//	@Description: 下发给前端一个验证码（挑战,随机6位数字）
 //	@receiver o
 //	@param c
 func (o *ChatApi) Challenge(c *gin.Context) {
@@ -313,13 +313,8 @@ func (o *ChatApi) Auth(c *gin.Context) {
 		apiresp.GinError(c, err)
 		return
 	}
-	// TODO 联调
-	//if imToken == "" {
-	//	imToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOiIxMjg0ODY5NjI1IiwiUGxhdGZvcm1JRCI6NSwiZXhwIjoxNzEzMjYxMDU5LCJuYmYiOjE3MDU0ODQ3NTksImlhdCI6MTcwNTQ4NTA1OX0.uensQi2oQM6L2wNKroegGWpvlqlSGkfnr6HRqlgm-ZU"
-	//}
 
 	resp.Token = imToken
-
 	log.ZInfo(c, "Auth resp: ", "resp", resp)
 	apiresp.GinSuccess(c, resp)
 }

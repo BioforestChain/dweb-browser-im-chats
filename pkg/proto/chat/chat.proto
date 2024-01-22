@@ -136,7 +136,7 @@ message RegisterUserInfo {
   int32 RegisterType = 11;
   // Dweb
   string address = 12;
-  string public_key = 13;
+  string publicKey = 13;
 }
 
 message RegisterUserReq {

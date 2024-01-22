@@ -245,7 +245,7 @@ changelog:
 #     build_flag_templates:
 #       - "--pull"
 #       - "--label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/OpenIMSDK/chat/main/README.md"
-#       - "--label=io.artifacthub.package.logo-url=hhttps://github.com/OpenIMSDK/chat/blob/main/assets/logo/openim-logo-green.png"
+#       - "--label=io.artifacthub.package.logo-url=hhttps://github.com/BioforestChain/dweb-browser-im-chats/blob/main/assets/logo/openim-logo-green.png"
 #       - '--label=io.artifacthub.package.maintainers=[{"name":"Xinwei Xiong","email":"3293172751nss@gmail.com"}]'
 #       - "--label=io.artifacthub.package.license=Apace-2.0"
 #       - "--label=org.opencontainers.image.description=OpenIM Open source top instant messaging system"
@@ -267,7 +267,7 @@ changelog:
 #     build_flag_templates:
 #       - "--pull"
 #       - "--label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/OpenIMSDK/chat/main/README.md"
-#       - "--label=io.artifacthub.package.logo-url=hhttps://github.com/OpenIMSDK/chat/blob/main/assets/logo/openim-logo-green.png"
+#       - "--label=io.artifacthub.package.logo-url=hhttps://github.com/BioforestChain/dweb-browser-im-chats/blob/main/assets/logo/openim-logo-green.png"
 #       - '--label=io.artifacthub.package.maintainers=[{"name":"Xinwei Xiong","email":"3293172751nss@gmail.com"}]'
 #       - "--label=io.artifacthub.package.license=Apace-2.0"
 #       - "--label=org.opencontainers.image.description=OpenIM Open source top instant messaging system"
@@ -289,7 +289,7 @@ changelog:
 #     build_flag_templates:
 #       - "--pull"
 #       - "--label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/OpenIMSDK/chat/main/README.md"
-#       - "--label=io.artifacthub.package.logo-url=hhttps://github.com/OpenIMSDK/chat/blob/main/assets/logo/openim-logo-green.png"
+#       - "--label=io.artifacthub.package.logo-url=hhttps://github.com/BioforestChain/dweb-browser-im-chats/blob/main/assets/logo/openim-logo-green.png"
 #       - '--label=io.artifacthub.package.maintainers=[{"name":"Xinwei Xiong","email":"3293172751nss@gmail.com"}]'
 #       - "--label=io.artifacthub.package.license=Apace-2.0"
 #       - "--label=org.opencontainers.image.description=OpenIM Open source top instant messaging system"
@@ -311,7 +311,7 @@ changelog:
 #     build_flag_templates:
 #       - "--pull"
 #       - "--label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/OpenIMSDK/chat/main/README.md"
-#       - "--label=io.artifacthub.package.logo-url=hhttps://github.com/OpenIMSDK/chat/blob/main/assets/logo/openim-logo-green.png"
+#       - "--label=io.artifacthub.package.logo-url=hhttps://github.com/BioforestChain/dweb-browser-im-chats/blob/main/assets/logo/openim-logo-green.png"
 #       - '--label=io.artifacthub.package.maintainers=[{"name":"Xinwei Xiong","email":"3293172751nss@gmail.com"}]'
 #       - "--label=io.artifacthub.package.license=Apace-2.0"
 #       - "--label=org.opencontainers.image.description=OpenIM Open source top instant messaging system"
@@ -361,7 +361,7 @@ nfpms:
       - admin-rpc
     # Your app's vendor.
     vendor: OpenIMSDK
-    homepage: https://github.com/OpenIMSDK/chat
+    homepage: https://github.com/BioforestChain/dweb-browser-im-chats
     maintainer: kubbot <https://github.com/kubbot>
     description: |-
       Auto sync github labels
@@ -441,9 +441,9 @@ release:
   prerelease: auto
   footer: |
 
-    ## Welcome to the {{ .Tag }} release of [chat](https://github.com/OpenIMSDK/chat)!🎉🎉!
+    ## Welcome to the {{ .Tag }} release of [chat](https://github.com/BioforestChain/dweb-browser-im-chats)!🎉🎉!
 
-    **Full Changelog**: https://github.com/OpenIMSDK/chat/compare/{{ .PreviousTag }}...{{ .Tag }}
+    **Full Changelog**: https://github.com/BioforestChain/dweb-browser-im-chats/compare/{{ .PreviousTag }}...{{ .Tag }}
 
     ## Helping out
 
@@ -470,7 +470,7 @@ release:
     > **Note**
     > @openimbot and @kubbot have made great contributions to the community as community 🤖robots(@openimsdk/bot), respectively.
     > Thanks to the @openimsdk/openim team for all their hard work on this release.
-    > Thank you to all the [💕developers and contributors](https://github.com/OpenIMSDK/chat/graphs/contributors), people from all over the world, OpenIM brings us together
+    > Thank you to all the [💕developers and contributors](https://github.com/BioforestChain/dweb-browser-im-chats/graphs/contributors), people from all over the world, OpenIM brings us together
     > Contributions to this project are welcome! Please see [CONTRIBUTING.md](https://github.com/OpenIMSDK/Open-IM-Server/blob/main/CONTRIBUTING.md) for details.
 
 

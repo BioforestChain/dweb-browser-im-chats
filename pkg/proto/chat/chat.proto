@@ -17,7 +17,7 @@ package OpenIMChat.chat;
 import "pub/wrapperspb.proto";
 import "pub/sdkws.proto";
 import "common/common.proto";
-option go_package = "github.com/OpenIMSDK/chat/pkg/proto/chat";
+option go_package = "github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/chat";
 
 message UserIdentity {
   string email = 1;
@@ -28,6 +28,25 @@ message UserIdentity {
   string account = 6;
 }
 
+message UserInfo{
+  string userID = 1;
+  string nickname = 2;
+  string faceURL = 3;
+  string ex = 4;
+  int64 createTime = 5;
+  int32 appMangerLevel = 6;
+  int32 globalRecvMsgOpt = 7;
+  string address = 8;
+  string publicKey = 9;
+}
+
+message userRegisterReq {
+  string secret = 1;
+  repeated UserInfo users = 2;
+}
+
+message userRegisterResp {
+}
 
 message UpdateUserInfoReq{
   string  userID = 1;
@@ -115,12 +134,9 @@ message RegisterUserInfo {
   string account = 9;
   string password = 10;
   int32 RegisterType = 11;
-  //Address       string `protobuf:"bytes,12,opt,name=address,proto3" json:"address"`
-  //	PublicKey     string `protobuf:"bytes,13,opt,name=public_key,proto3" json:"public_key"`
-
+  // Dweb
   string address = 12;
   string public_key = 13;
-
 }
 
 message RegisterUserReq {
@@ -133,8 +149,18 @@ message RegisterUserReq {
   RegisterUserInfo user = 7;
 }
 
-message RegisterUserNewReq {
+message RegisterDwebUserReq {
   RegisterUserInfo user = 1;
+}
+
+message ChallengeReq {
+  string publicKey = 1;
+}
+
+message AuthReq {
+  string sign = 1;
+  string publicKey = 2;
+  string address = 3;
 }
 
 message RegisterUserResp {
@@ -323,7 +349,16 @@ message SearchUserInfoResp {
   repeated OpenIMChat.common.UserFullInfo users = 2;
 }
 
+message GetUserReq {
+  string address = 1;
+}
+
+message GetUserResp {
+  OpenIMChat.common.UserAccount userAccount = 1;
+}
+
 service chat {
+  rpc GetUserByAddress(GetUserReq) returns(GetUserResp);
   // Edit personal information - called by the user or an administrator
   rpc UpdateUserInfo(UpdateUserInfoReq) returns(UpdateUserInfoResp);
   rpc AddUserAccount(AddUserAccountReq) returns(AddUserAccountResp);
@@ -337,7 +372,7 @@ service chat {
   rpc SendVerifyCode(SendVerifyCodeReq) returns(SendVerifyCodeResp);
   rpc VerifyCode(VerifyCodeReq) returns(VerifyCodeResp);
   rpc RegisterUser(RegisterUserReq) returns(RegisterUserResp);
-  rpc RegisterUserNew(RegisterUserNewReq) returns(RegisterUserResp);
+  rpc RegisterDwebUser(RegisterDwebUserReq) returns(RegisterUserResp);
   rpc Login(LoginReq) returns(LoginResp);
   rpc ResetPassword(ResetPasswordReq) returns(ResetPasswordResp);
   rpc ChangePassword(ChangePasswordReq) returns(ChangePasswordResp);

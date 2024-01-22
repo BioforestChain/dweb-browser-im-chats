@@ -118,6 +118,17 @@ func (o *chatSvr) FindUserPublicInfo(ctx context.Context, req *chat.FindUserPubl
 	}, nil
 }
 
+func (o *chatSvr) GetUserByAddress(ctx context.Context, req *chat.GetUserReq) (*chat.GetUserResp, error) {
+	account, err := o.Database.GetUserByAddress(ctx, req.Address)
+	if err != nil {
+		return nil, err
+	}
+
+	return &chat.GetUserResp{
+		UserAccount: DbToPbUserAccount(account),
+	}, nil
+}
+
 func (o *chatSvr) AddUserAccount(ctx context.Context, req *chat.AddUserAccountReq) (*chat.AddUserAccountResp, error) {
 	if _, _, err := mctx.Check(ctx); err != nil {
 		return nil, err

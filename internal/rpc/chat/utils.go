@@ -82,3 +82,14 @@ func DbToPbLogInfo(log *chat.Log) *common.LogInfo {
 func DbToPbLogInfos(logs []*chat.Log) []*common.LogInfo {
 	return utils.Slice(logs, DbToPbLogInfo)
 }
+
+func DbToPbUserAccount(account *chat.Account) *common.UserAccount {
+	return &common.UserAccount{
+		UserID:         account.UserID,
+		CreateTime:     account.CreateTime.UnixMilli(),
+		ChangeTime:     account.ChangeTime.UnixMilli(),
+		OperatorUserID: account.OperatorUserID,
+		Address:        account.Address,
+		PublicKey:      account.PublicKey,
+	}
+}

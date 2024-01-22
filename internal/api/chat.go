@@ -197,10 +197,8 @@ func (o *ChatApi) Challenge(c *gin.Context) {
 //	@param c
 func (o *ChatApi) Auth(c *gin.Context) {
 	var (
-		req       chat.AuthReq
-		resp      apistruct.AuthResp
-		tmpUserId string
-		//reqNew    chat.RegisterUserNewReq
+		req    chat.AuthReq
+		resp   apistruct.AuthResp
 		reqNew chat.RegisterUserReq
 	)
 	if err := c.BindJSON(&req); err != nil {
@@ -270,45 +268,57 @@ func (o *ChatApi) Auth(c *gin.Context) {
 		FaceURL:     "",
 		AreaCode:    "+86",
 		Password:    "df10ef8509dc176d733d59549e7dbfaf",
-		//        "faceURL": "",
-		//        "areaCode": "+86",
-		//        "phoneNumber": "13912345678",
-		//        "password": "df10ef8509dc176d733d59549e7dbfaf",
+	}
+
+	userAccount, err := o.chatClient.GetUserByAddress(c, &chat.GetUserReq{Address: req.Address})
+	if err != nil && !errs.ErrRecordNotFound.Is(err) {
+		apiresp.GinError(c, errs.ErrArgs.Wrap("challenge void")) // 参数校验失败
+		return
+	}
+
+	// 老用户
+	if userAccount != nil {
+		imToken, err := o.imApiCaller.UserToken(c, userAccount.UserAccount.UserID, constant.WebPlatformID)
+		if err != nil {
+			apiresp.GinError(c, err)
+			return
+		}
+
+		resp.Token = imToken
+		apiresp.GinSuccess(c, resp)
+		return
 	}
 
 	respRegisterUser, err := o.chatClient.RegisterUser(c, &reqNew)
-	if respRegisterUser == nil {
-		tmpUserId = timeStamp
-	} else {
-		tmpUserId = respRegisterUser.UserID
-	}
-
-	userInfo := &chat.UserInfo{
-		//UserID:     tmp,
-		UserID:     tmpUserId,
-		Nickname:   tmpUserId,
-		CreateTime: time.Now().UnixMilli(),
-		Address:    address,
-		PublicKey:  publicKeyStr,
-	}
-	err = o.imApiCaller.RegisterUserNew(c, []*chat.UserInfo{userInfo})
 	if err != nil {
 		apiresp.GinError(c, err)
 		return
 	}
-	//tmpUserId = userInfo.UserID
+
+	userInfo := &sdkws.UserInfo{
+		UserID:     respRegisterUser.UserID,
+		Nickname:   timeStamp,
+		FaceURL:    reqNew.User.FaceURL,
+		CreateTime: time.Now().UnixMilli(),
+	}
+	err = o.imApiCaller.RegisterUser(c, []*sdkws.UserInfo{userInfo})
+	if err != nil {
+		apiresp.GinError(c, err)
+		return
+	}
+
 	// 目前根据旧账号系统登录后，使用 Header Token: imToken
 	//resp.ChatToken = respRegisterUser.ChatToken
 
-	imToken, err := o.imApiCaller.UserToken(c, tmpUserId, constant.WebPlatformID)
+	imToken, err := o.imApiCaller.UserToken(c, respRegisterUser.UserID, constant.WebPlatformID)
 	if err != nil {
 		apiresp.GinError(c, err)
 		return
 	}
 	// TODO 联调
-	if imToken == "" {
-		imToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOiIxMjg0ODY5NjI1IiwiUGxhdGZvcm1JRCI6NSwiZXhwIjoxNzEzMjYxMDU5LCJuYmYiOjE3MDU0ODQ3NTksImlhdCI6MTcwNTQ4NTA1OX0.uensQi2oQM6L2wNKroegGWpvlqlSGkfnr6HRqlgm-ZU"
-	}
+	//if imToken == "" {
+	//	imToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOiIxMjg0ODY5NjI1IiwiUGxhdGZvcm1JRCI6NSwiZXhwIjoxNzEzMjYxMDU5LCJuYmYiOjE3MDU0ODQ3NTksImlhdCI6MTcwNTQ4NTA1OX0.uensQi2oQM6L2wNKroegGWpvlqlSGkfnr6HRqlgm-ZU"
+	//}
 
 	resp.Token = imToken
 

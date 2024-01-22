@@ -44,6 +44,11 @@ func (o *Account) Take(ctx context.Context, userId string) (*chat.Account, error
 	return &a, errs.Wrap(o.db.WithContext(ctx).Where("user_id = ?", userId).First(&a).Error)
 }
 
+func (o *Account) TakeByAddress(ctx context.Context, address string) (*chat.Account, error) {
+	var a chat.Account
+	return &a, errs.Wrap(o.db.WithContext(ctx).Where("address = ?", address).First(&a).Error)
+}
+
 func (o *Account) Update(ctx context.Context, userID string, data map[string]any) error {
 	return errs.Wrap(o.db.WithContext(ctx).Model(&chat.Account{}).Where("user_id = ?", userID).Updates(data).Error)
 }

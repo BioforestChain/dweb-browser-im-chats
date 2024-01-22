@@ -372,6 +372,8 @@ func (o *chatSvr) RegisterUser(ctx context.Context, req *chat.RegisterUserReq) (
 		UserID:         req.User.UserID,
 		Password:       req.User.Password,
 		OperatorUserID: mcontext.GetOpUserID(ctx),
+		Address:        req.User.Address,
+		PublicKey:      req.User.PublicKey,
 		ChangeTime:     register.CreateTime,
 		CreateTime:     register.CreateTime,
 	}
@@ -412,6 +414,12 @@ func (o *chatSvr) RegisterUser(ctx context.Context, req *chat.RegisterUserReq) (
 	resp.UserID = req.User.UserID
 	return resp, nil
 }
+
+func (o *chatSvr) RegisterDwebUser(ctx context.Context, req *chat.RegisterDwebUserReq) (*chat.RegisterUserResp, error) {
+	return nil, nil
+}
+
+//func (o *chatSvr) mustEmbedUnimplementedChatServer() {}
 
 func (o *chatSvr) Login(ctx context.Context, req *chat.LoginReq) (*chat.LoginResp, error) {
 	defer log.ZDebug(ctx, "return")

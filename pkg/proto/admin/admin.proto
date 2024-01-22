@@ -17,7 +17,7 @@ package OpenIMChat.admin;
 import "pub/wrapperspb.proto";
 import "pub/sdkws.proto";
 import "common/common.proto";
-option go_package = "github.com/OpenIMSDK/chat/pkg/proto/admin";
+option go_package = "github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/admin";
 
 //登录
 message LoginReq  {

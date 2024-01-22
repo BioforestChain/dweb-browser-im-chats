@@ -30,6 +30,7 @@ import (
 
 type ChatDatabaseInterface interface {
 	IsNotFound(err error) bool
+	GetUserByAddress(ctx context.Context, address string) (account *table.Account, err error)
 	GetUser(ctx context.Context, userID string) (account *table.Account, err error)
 	UpdateUseInfo(ctx context.Context, userID string, attribute map[string]any) (err error)
 	FindAttribute(ctx context.Context, userIDs []string) ([]*table.Attribute, error)
@@ -105,6 +106,10 @@ func (o *ChatDatabase) UploadLogs(ctx context.Context, logs []*table.Log) error 
 
 func (o *ChatDatabase) IsNotFound(err error) bool {
 	return errs.Unwrap(err) == gorm.ErrRecordNotFound
+}
+
+func (o *ChatDatabase) GetUserByAddress(ctx context.Context, address string) (account *table.Account, err error) {
+	return o.account.TakeByAddress(ctx, address)
 }
 
 func (o *ChatDatabase) GetUser(ctx context.Context, userID string) (account *table.Account, err error) {

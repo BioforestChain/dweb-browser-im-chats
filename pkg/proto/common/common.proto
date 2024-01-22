@@ -14,7 +14,7 @@
 
 syntax = "proto3";
 package OpenIMChat.common;
-option go_package = "github.com/OpenIMSDK/chat/pkg/proto/common";
+option go_package = "github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/common";
 
 
 message UserFullInfo{
@@ -81,4 +81,13 @@ message LogInfo{
   string systemType=8;
   string ex=9;
   string version=10;
+}
+
+message UserAccount {
+  string userID = 1;
+  int64 createTime = 2;
+  int64 changeTime = 3;
+  string operatorUserID = 4;
+  string address = 5;
+  string publicKey = 6;
 }

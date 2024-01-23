@@ -27,7 +27,9 @@ type LoginResp struct {
 }
 
 type AuthResp struct {
-	Token string `json:"token"`
+	ImToken   string `json:"imToken"`
+	ChatToken string `json:"chatToken"`
+	UserID    string `json:"userID"`
 }
 type ChallengeResp struct {
 	Challenge string `json:"challenge"`

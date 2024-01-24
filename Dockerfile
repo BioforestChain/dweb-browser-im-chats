@@ -36,7 +36,7 @@ RUN make clean
 RUN make build
 
 # Build the runtime stage
-FROM ghcr.io/openim-sigs/openim-ubuntu-image:latest
+    FROM ghcr.io/openim-sigs/openim-ubuntu-image:latest
 
 WORKDIR ${CHAT_WORKDIR}
 

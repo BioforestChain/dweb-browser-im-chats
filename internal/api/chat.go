@@ -17,22 +17,21 @@ package api
 import (
 	"context"
 	"fmt"
-	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/db/cache"
-	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/sign"
-	"io"
-	"net"
-	"strconv"
-	"time"
-
 	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/apicall"
 	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/apistruct"
 	constant2 "github.com/BioforestChain/dweb-browser-im-chats/pkg/common/constant"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/db/cache"
 	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/mctx"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/sign"
 	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/util/hash"
 	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/util/number"
 	"github.com/OpenIMSDK/protocol/sdkws"
 	"github.com/OpenIMSDK/tools/checker"
 	"github.com/OpenIMSDK/tools/log"
+	"io"
+	"net"
+	"strconv"
+	"time"
 
 	"github.com/OpenIMSDK/protocol/constant"
 	"github.com/OpenIMSDK/tools/a2r"
@@ -270,7 +269,7 @@ func (o *ChatApi) Auth(c *gin.Context) {
 
 	userAccount, err := o.chatClient.GetUserByAddress(c, &chat.GetUserReq{Address: req.Address})
 	if err != nil && !errs.ErrRecordNotFound.Is(err) {
-		apiresp.GinError(c, errs.ErrArgs.Wrap("challenge void")) // 参数校验失败
+		apiresp.GinError(c, errs.ErrArgs.Wrap("user account record not found")) // 账号不存在参数校验失败
 		return
 	}
 
@@ -282,7 +281,15 @@ func (o *ChatApi) Auth(c *gin.Context) {
 			return
 		}
 
-		resp.Token = imToken
+		chatTokenRes, err := o.adminClient.CreateToken(c, &admin.CreateTokenReq{UserID: userAccount.UserAccount.UserID, UserType: constant2.NormalUser})
+		if err != nil {
+			apiresp.GinError(c, err)
+			return
+		}
+
+		resp.ChatToken = chatTokenRes.Token
+		resp.UserID = userAccount.UserAccount.UserID
+		resp.ImToken = imToken
 		apiresp.GinSuccess(c, resp)
 		return
 	}
@@ -306,7 +313,8 @@ func (o *ChatApi) Auth(c *gin.Context) {
 	}
 
 	// 目前根据旧账号系统登录后，使用 Header Token: imToken
-	//resp.ChatToken = respRegisterUser.ChatToken
+	resp.ChatToken = respRegisterUser.ChatToken
+	resp.UserID = respRegisterUser.UserID
 
 	imToken, err := o.imApiCaller.UserToken(c, respRegisterUser.UserID, constant.WebPlatformID)
 	if err != nil {
@@ -314,7 +322,7 @@ func (o *ChatApi) Auth(c *gin.Context) {
 		return
 	}
 
-	resp.Token = imToken
+	resp.ImToken = imToken
 	log.ZInfo(c, "Auth resp: ", "resp", resp)
 	apiresp.GinSuccess(c, resp)
 }

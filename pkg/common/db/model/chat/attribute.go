@@ -98,7 +98,7 @@ func (o *Attribute) Take(ctx context.Context, userID string) (*chat.Attribute, e
 func (o *Attribute) SearchNormalUser(ctx context.Context, keyword string, forbiddenIDs []string, gender int32, page int32, size int32) (uint32, []*chat.Attribute, error) {
 	db := o.db.WithContext(ctx)
 	account, err := NewAccount(db).TakeByAddress(ctx, keyword)
-	if err != nil {
+	if err != nil && errs.ErrRecordNotFound.Is(err) {
 		return 0, nil, err
 	}
 	if len(account.UserID) > 0 {

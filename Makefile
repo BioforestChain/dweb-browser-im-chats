@@ -229,8 +229,13 @@ go.build.%:
 	@echo "=====> BIN_DIR=$(BIN_DIR)"
 	@echo "===========> Building binary $(COMMAND) $(VERSION) for $(OS)_$(ARCH)"
 	@mkdir -p $(BIN_DIR)/platforms/$(OS)/$(ARCH)
-	@cd $(ROOT_DIR)/cmd/*/$(COMMAND) && CGO_ENABLED=0 GOOS=$(OS) GOARCH=$(ARCH) $(GO) build $(GO_BUILD_FLAGS) -o \
-		$(BIN_DIR)/platforms/$(OS)/$(ARCH)/$(COMMAND)$(GO_OUT_EXT) .
+
+	@cd $(ROOT_DIR)/cmd/*/$(COMMAND) && \
+	if [ "$(COMMAND)" = "chat-api" ] || [ "$(COMMAND)" = "admin-api" ]; then \
+		CGO_ENABLED=1 GOOS=$(OS) GOARCH=$(ARCH) $(GO) build -work -x -ldflags "-linkmode external -extldflags -static" -o $(BIN_DIR)/platforms/$(OS)/$(ARCH)/$(COMMAND)$(GO_OUT_EXT) . ; \
+	else \
+  		CGO_ENABLED=1 GOOS=$(OS) GOARCH=$(ARCH) $(GO) build $(GO_BUILD_FLAGS) -o $(BIN_DIR)/platforms/$(OS)/$(ARCH)/$(COMMAND)$(GO_OUT_EXT) . ; \
+	fi
 
 ## build-multiarch: Build binaries for multiple platforms.
 .PHONY: build-multiarch

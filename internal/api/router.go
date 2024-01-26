@@ -16,7 +16,6 @@ package api
 
 import (
 	"context"
-
 	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/config"
 	"github.com/OpenIMSDK/tools/discoveryregistry"
 	"github.com/gin-gonic/gin"

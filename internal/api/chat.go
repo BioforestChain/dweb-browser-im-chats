@@ -234,6 +234,7 @@ func (o *ChatApi) Auth(c *gin.Context) {
 		apiresp.GinError(c, errs.ErrArgs.Wrap("address void")) // 参数校验失败
 		return
 	}
+
 	verSign := sign.VerifySign(challenge, signature, publicKeyStr)
 	if !verSign {
 		apiresp.GinError(c, errs.ErrArgs.Wrap("sign validation failed error "))

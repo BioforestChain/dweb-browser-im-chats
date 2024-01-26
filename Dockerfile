@@ -18,6 +18,11 @@ ARG GOOS
 # Use golang as the builder stage
 FROM golang:1.21 AS builder
 
+RUN apt-get update; \
+    apt-get install libsodium-dev pkg-config; 
+
+#RUN apt-get install libsodium-dev && apt-get install pkg-config
+
 ARG GO111MODULE=on
 ARG GOPROXY=https://goproxy.cn,direct
 

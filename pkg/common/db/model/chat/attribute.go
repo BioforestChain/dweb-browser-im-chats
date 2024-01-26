@@ -82,8 +82,28 @@ func (o *Attribute) Take(ctx context.Context, userID string) (*chat.Attribute, e
 	return &a, errs.Wrap(o.db.WithContext(ctx).Where("user_id = ?", userID).Take(&a).Error)
 }
 
+// SearchNormalUser
+//
+//	@Description:添加好友-搜索
+//	@receiver o
+//	@param ctx
+//	@param keyword
+//	@param forbiddenIDs
+//	@param gender
+//	@param page
+//	@param size
+//	@return uint32
+//	@return []*chat.Attribute
+//	@return error
 func (o *Attribute) SearchNormalUser(ctx context.Context, keyword string, forbiddenIDs []string, gender int32, page int32, size int32) (uint32, []*chat.Attribute, error) {
 	db := o.db.WithContext(ctx)
+	account, err := NewAccount(db).TakeByAddress(ctx, keyword)
+	if err != nil {
+		return 0, nil, err
+	}
+	if len(account.UserID) > 0 {
+		keyword = account.UserID
+	}
 	var genders []int32
 	if gender == 0 {
 		genders = append(genders, 0, 1, 2)

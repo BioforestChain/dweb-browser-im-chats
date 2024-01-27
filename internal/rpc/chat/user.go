@@ -244,7 +244,6 @@ func (o *chatSvr) FindUserFullInfo(ctx context.Context, req *chat.FindUserFullIn
 		account, _ := o.Database.GetUser(ctx, usr.UserID)
 		dWebTotalUsr[i].Address = account.Address
 	}
-	//attributes, err := o.Database.FindAttributeByAddress(ctx, req.UserIDs)
 	if err != nil {
 		return nil, err
 	}

@@ -73,7 +73,6 @@ type AttributeInterface interface {
 	Create(ctx context.Context, attribute ...*Attribute) error
 	Update(ctx context.Context, userID string, data map[string]any) error
 	Find(ctx context.Context, userIds []string) ([]*Attribute, error)
-	//FindExpand(ctx context.Context, userIds []string) ([]*AttributeExpand, error)
 	FindAccount(ctx context.Context, accounts []string) ([]*Attribute, error)
 	Search(ctx context.Context, keyword string, genders []int32, page int32, size int32) (uint32, []*Attribute, error)
 	TakePhone(ctx context.Context, areaCode string, phoneNumber string) (*Attribute, error)

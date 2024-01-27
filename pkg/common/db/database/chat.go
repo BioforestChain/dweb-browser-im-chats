@@ -17,7 +17,6 @@ package database
 import (
 	"context"
 	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/util/array"
-	"reflect"
 	"time"
 
 	constant2 "github.com/BioforestChain/dweb-browser-im-chats/pkg/common/constant"
@@ -36,7 +35,6 @@ type ChatDatabaseInterface interface {
 	GetUser(ctx context.Context, userID string) (account *table.Account, err error)
 	UpdateUseInfo(ctx context.Context, userID string, attribute map[string]any) (err error)
 	FindAttribute(ctx context.Context, userIDs []string) ([]*table.Attribute, error)
-	//FindAttributeByAddress(ctx context.Context, userIDs []string) ([]*table.AttributeExpand, error)
 	FindAttributeByAccount(ctx context.Context, accounts []string) ([]*table.Attribute, error)
 	TakeAttributeByPhone(ctx context.Context, areaCode string, phoneNumber string) (*table.Attribute, error)
 	TakeAttributeByEmail(ctx context.Context, Email string) (*table.Attribute, error)
@@ -135,10 +133,6 @@ func (o *ChatDatabase) FindAttribute(ctx context.Context, userIDs []string) ([]*
 	return o.attribute.Find(ctx, userIDs)
 }
 
-//func (o *ChatDatabase) FindAttributeByAddress(ctx context.Context, userIDs []string) ([]*table.AttributeExpand, error) {
-//	return o.attribute.FindExpand(ctx, userIDs)
-//}
-
 func (o *ChatDatabase) FindAttributeByAccount(ctx context.Context, accounts []string) ([]*table.Attribute, error) {
 	return o.attribute.FindAccount(ctx, accounts)
 }
@@ -187,19 +181,7 @@ func (o *ChatDatabase) Search(ctx context.Context, normalUser int32, keyword str
 //	@return total
 //	@return attributes
 //	@return err
-func mapValues(source interface{}, target interface{}) {
-	sourceValue := reflect.ValueOf(source).Elem()
-	targetValue := reflect.ValueOf(target).Elem()
 
-	for i := 0; i < sourceValue.NumField(); i++ {
-		fieldName := sourceValue.Type().Field(i).Name
-		targetField := targetValue.FieldByName(fieldName)
-
-		if targetField.IsValid() {
-			targetField.Set(sourceValue.Field(i))
-		}
-	}
-}
 func (o *ChatDatabase) SearchByAddress(ctx context.Context, normalUser int32, keyword string, genders int32, pageNumber int32, showNumber int32) (total uint32, attributes []*table.AttributeExpand, err error) {
 	var forbiddenIDs []string
 	if int(normalUser) == constant2.NormalUser {

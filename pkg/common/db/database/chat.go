@@ -16,6 +16,8 @@ package database
 
 import (
 	"context"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/util/array"
+	"reflect"
 	"time"
 
 	constant2 "github.com/BioforestChain/dweb-browser-im-chats/pkg/common/constant"
@@ -34,12 +36,14 @@ type ChatDatabaseInterface interface {
 	GetUser(ctx context.Context, userID string) (account *table.Account, err error)
 	UpdateUseInfo(ctx context.Context, userID string, attribute map[string]any) (err error)
 	FindAttribute(ctx context.Context, userIDs []string) ([]*table.Attribute, error)
+	//FindAttributeByAddress(ctx context.Context, userIDs []string) ([]*table.AttributeExpand, error)
 	FindAttributeByAccount(ctx context.Context, accounts []string) ([]*table.Attribute, error)
 	TakeAttributeByPhone(ctx context.Context, areaCode string, phoneNumber string) (*table.Attribute, error)
 	TakeAttributeByEmail(ctx context.Context, Email string) (*table.Attribute, error)
 	TakeAttributeByAccount(ctx context.Context, account string) (*table.Attribute, error)
 	TakeAttributeByUserID(ctx context.Context, userID string) (*table.Attribute, error)
 	Search(ctx context.Context, normalUser int32, keyword string, gender int32, pageNumber int32, showNumber int32) (uint32, []*table.Attribute, error)
+	SearchByAddress(ctx context.Context, normalUser int32, keyword string, gender int32, pageNumber int32, showNumber int32) (uint32, []*table.AttributeExpand, error)
 	SearchUser(ctx context.Context, keyword string, userIDs []string, genders []int32, pageNumber int32, showNumber int32) (uint32, []*table.Attribute, error)
 	CountVerifyCodeRange(ctx context.Context, account string, start time.Time, end time.Time) (uint32, error)
 	AddVerifyCode(ctx context.Context, verifyCode *table.VerifyCode, fn func() error) error
@@ -131,6 +135,10 @@ func (o *ChatDatabase) FindAttribute(ctx context.Context, userIDs []string) ([]*
 	return o.attribute.Find(ctx, userIDs)
 }
 
+//func (o *ChatDatabase) FindAttributeByAddress(ctx context.Context, userIDs []string) ([]*table.AttributeExpand, error) {
+//	return o.attribute.FindExpand(ctx, userIDs)
+//}
+
 func (o *ChatDatabase) FindAttributeByAccount(ctx context.Context, accounts []string) ([]*table.Attribute, error) {
 	return o.attribute.FindAccount(ctx, accounts)
 }
@@ -164,6 +172,62 @@ func (o *ChatDatabase) Search(ctx context.Context, normalUser int32, keyword str
 		return 0, nil, err
 	}
 	return total, totalUser, nil
+}
+
+// Search
+//
+//	@Description: TODO 添加返回Address
+//	@receiver o
+//	@param ctx
+//	@param normalUser
+//	@param keyword
+//	@param genders
+//	@param pageNumber
+//	@param showNumber
+//	@return total
+//	@return attributes
+//	@return err
+func mapValues(source interface{}, target interface{}) {
+	sourceValue := reflect.ValueOf(source).Elem()
+	targetValue := reflect.ValueOf(target).Elem()
+
+	for i := 0; i < sourceValue.NumField(); i++ {
+		fieldName := sourceValue.Type().Field(i).Name
+		targetField := targetValue.FieldByName(fieldName)
+
+		if targetField.IsValid() {
+			targetField.Set(sourceValue.Field(i))
+		}
+	}
+}
+func (o *ChatDatabase) SearchByAddress(ctx context.Context, normalUser int32, keyword string, genders int32, pageNumber int32, showNumber int32) (total uint32, attributes []*table.AttributeExpand, err error) {
+	var forbiddenIDs []string
+	if int(normalUser) == constant2.NormalUser {
+		forbiddenIDs, err = o.forbiddenAccount.FindAllIDs(ctx)
+		if err != nil {
+			return 0, nil, err
+		}
+	}
+	account, err := o.GetUserByAddress(ctx, keyword)
+	if err != nil {
+		return 0, nil, err
+	}
+	if len(account.UserID) > 0 {
+		keyword = account.UserID
+	}
+
+	total, totalUser, err := o.attribute.SearchNormalUser(ctx, keyword, forbiddenIDs, genders, pageNumber, showNumber)
+	if err != nil {
+		return 0, nil, err
+	}
+
+	dWebTotalUsr := make([]*table.AttributeExpand, len(totalUser))
+	for i, usr := range totalUser {
+		dWebTotalUsr[i] = &table.AttributeExpand{}
+		array.MapValues(usr, dWebTotalUsr[i])
+		dWebTotalUsr[i].Address = account.Address
+	}
+	return total, dWebTotalUsr, nil
 }
 
 func (o *ChatDatabase) SearchUser(ctx context.Context, keyword string, userIDs []string, genders []int32, pageNumber int32, showNumber int32) (uint32, []*table.Attribute, error) {

@@ -60,9 +60,33 @@ func DbToPbUserFullInfo(attribute *chat.Attribute) *common.UserFullInfo {
 		RegisterType:     attribute.RegisterType,
 	}
 }
+func DbToPbUserFullInfoDWebAddress(attribute *chat.AttributeExpand) *common.UserFullInfo {
+	return &common.UserFullInfo{
+		UserID:           attribute.UserID,
+		Password:         "",
+		Account:          attribute.Account,
+		PhoneNumber:      attribute.PhoneNumber,
+		AreaCode:         attribute.AreaCode,
+		Email:            attribute.Email,
+		Nickname:         attribute.Nickname,
+		FaceURL:          attribute.FaceURL,
+		Gender:           attribute.Gender,
+		Level:            attribute.Level,
+		Birth:            attribute.BirthTime.UnixMilli(),
+		AllowAddFriend:   attribute.AllowAddFriend,
+		AllowBeep:        attribute.AllowBeep,
+		AllowVibration:   attribute.AllowVibration,
+		GlobalRecvMsgOpt: attribute.GlobalRecvMsgOpt,
+		RegisterType:     attribute.RegisterType,
+		Address:          attribute.Address,
+	}
+}
 
 func DbToPbUserFullInfos(attributes []*chat.Attribute) []*common.UserFullInfo {
 	return utils.Slice(attributes, DbToPbUserFullInfo)
+}
+func DbToPbUserFullInfosDWebAddress(attributes []*chat.AttributeExpand) []*common.UserFullInfo {
+	return utils.Slice(attributes, DbToPbUserFullInfoDWebAddress)
 }
 
 func DbToPbLogInfo(log *chat.Log) *common.LogInfo {

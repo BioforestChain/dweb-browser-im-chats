@@ -34,6 +34,8 @@ message UserFullInfo{
   int32  allowVibration = 14;
   int32 globalRecvMsgOpt = 15;
   int32 registerType = 16;
+  string address = 17;
+  string publicKey = 18;
 }
 
 message UserPublicInfo{

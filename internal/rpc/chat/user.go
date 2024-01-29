@@ -16,18 +16,18 @@ package chat
 
 import (
 	"context"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/constant"
 	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/db/dbutil"
 	chat2 "github.com/BioforestChain/dweb-browser-im-chats/pkg/common/db/table/chat"
-	constant2 "github.com/OpenIMSDK/protocol/constant"
-	"github.com/OpenIMSDK/tools/mcontext"
-	"time"
-
-	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/constant"
 	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/mctx"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/util/array"
 	"github.com/BioforestChain/dweb-browser-im-chats/pkg/eerrs"
 	"github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/chat"
+	constant2 "github.com/OpenIMSDK/protocol/constant"
 	"github.com/OpenIMSDK/tools/errs"
 	"github.com/OpenIMSDK/tools/log"
+	"github.com/OpenIMSDK/tools/mcontext"
+	"time"
 )
 
 func (o *chatSvr) UpdateUserInfo(ctx context.Context, req *chat.UpdateUserInfoReq) (*chat.UpdateUserInfoResp, error) {
@@ -196,6 +196,14 @@ func (o *chatSvr) AddUserAccount(ctx context.Context, req *chat.AddUserAccountRe
 	return &chat.AddUserAccountResp{}, nil
 }
 
+// SearchUserPublicInfo
+//
+//	@Description: TODO
+//	@receiver o
+//	@param ctx
+//	@param req
+//	@return *chat.SearchUserPublicInfoResp
+//	@return error
 func (o *chatSvr) SearchUserPublicInfo(ctx context.Context, req *chat.SearchUserPublicInfoReq) (*chat.SearchUserPublicInfoResp, error) {
 	defer log.ZDebug(ctx, "return")
 	if _, _, err := mctx.Check(ctx); err != nil {
@@ -211,6 +219,14 @@ func (o *chatSvr) SearchUserPublicInfo(ctx context.Context, req *chat.SearchUser
 	}, nil
 }
 
+// FindUserFullInfo
+//
+//	@Description: dweb 地址找人
+//	@receiver o
+//	@param ctx
+//	@param req
+//	@return *chat.FindUserFullInfoResp
+//	@return error
 func (o *chatSvr) FindUserFullInfo(ctx context.Context, req *chat.FindUserFullInfoReq) (*chat.FindUserFullInfoResp, error) {
 	defer log.ZDebug(ctx, "return")
 	if _, _, err := mctx.Check(ctx); err != nil {
@@ -220,23 +236,40 @@ func (o *chatSvr) FindUserFullInfo(ctx context.Context, req *chat.FindUserFullIn
 		return nil, errs.ErrArgs.Wrap("UserIDs is empty")
 	}
 	attributes, err := o.Database.FindAttribute(ctx, req.UserIDs)
+
+	dWebTotalUsr := make([]*chat2.AttributeExpand, len(attributes))
+	for i, usr := range attributes {
+		dWebTotalUsr[i] = &chat2.AttributeExpand{}
+		array.MapValues(usr, dWebTotalUsr[i])
+		account, _ := o.Database.GetUser(ctx, usr.UserID)
+		dWebTotalUsr[i].Address = account.Address
+	}
 	if err != nil {
 		return nil, err
 	}
-	return &chat.FindUserFullInfoResp{Users: DbToPbUserFullInfos(attributes)}, nil
+	return &chat.FindUserFullInfoResp{Users: DbToPbUserFullInfosDWebAddress(dWebTotalUsr)}, nil
 }
 
+// SearchUserFullInfo
+//
+//	@Description: dweb 地址找人
+//	@receiver o
+//	@param ctx
+//	@param req
+//	@return *chat.SearchUserFullInfoResp
+//	@return error
 func (o *chatSvr) SearchUserFullInfo(ctx context.Context, req *chat.SearchUserFullInfoReq) (*chat.SearchUserFullInfoResp, error) {
 	if _, _, err := mctx.Check(ctx); err != nil {
 		return nil, err
 	}
-	total, list, err := o.Database.Search(ctx, req.Normal, req.Keyword, req.Genders, req.Pagination.PageNumber, req.Pagination.ShowNumber)
+	total, list, err := o.Database.SearchByAddress(ctx, req.Normal, req.Keyword, req.Genders, req.Pagination.PageNumber, req.Pagination.ShowNumber)
 	if err != nil {
 		return nil, err
 	}
+
 	return &chat.SearchUserFullInfoResp{
 		Total: total,
-		Users: DbToPbUserFullInfos(list),
+		Users: DbToPbUserFullInfosDWebAddress(list),
 	}, nil
 }
 

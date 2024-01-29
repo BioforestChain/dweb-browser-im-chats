@@ -16,7 +16,6 @@ package chat
 
 import (
 	"context"
-
 	"github.com/OpenIMSDK/tools/errs"
 	"github.com/OpenIMSDK/tools/ormutil"
 	"gorm.io/gorm"
@@ -97,13 +96,6 @@ func (o *Attribute) Take(ctx context.Context, userID string) (*chat.Attribute, e
 //	@return error
 func (o *Attribute) SearchNormalUser(ctx context.Context, keyword string, forbiddenIDs []string, gender int32, page int32, size int32) (uint32, []*chat.Attribute, error) {
 	db := o.db.WithContext(ctx)
-	account, err := NewAccount(db).TakeByAddress(ctx, keyword)
-	if err != nil {
-		return 0, nil, err
-	}
-	if len(account.UserID) > 0 {
-		keyword = account.UserID
-	}
 	var genders []int32
 	if gender == 0 {
 		genders = append(genders, 0, 1, 2)
@@ -114,7 +106,8 @@ func (o *Attribute) SearchNormalUser(ctx context.Context, keyword string, forbid
 	if len(forbiddenIDs) > 0 {
 		db = db.Where("user_id not in ?", forbiddenIDs)
 	}
-	return ormutil.GormSearch[chat.Attribute](db, []string{"user_id", "account", "nickname", "phone_number"}, keyword, page, size)
+	total, totalUser, err := ormutil.GormSearch[chat.Attribute](db, []string{"user_id", "account", "nickname", "phone_number"}, keyword, page, size)
+	return total, totalUser, err
 }
 
 func (o *Attribute) SearchUser(ctx context.Context, keyword string, userIDs []string, genders []int32, pageNumber int32, showNumber int32) (uint32, []*chat.Attribute, error) {

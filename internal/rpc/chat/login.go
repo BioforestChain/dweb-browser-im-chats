@@ -247,6 +247,7 @@ func (o *chatSvr) genVerifyCode() string {
 	return string(data)
 }
 
+/*用户注册-三张表*/
 func (o *chatSvr) RegisterUser(ctx context.Context, req *chat.RegisterUserReq) (*chat.RegisterUserResp, error) {
 	resp := &chat.RegisterUserResp{}
 
@@ -393,6 +394,7 @@ func (o *chatSvr) RegisterUser(ctx context.Context, req *chat.RegisterUserReq) (
 		AllowBeep:      constant.DefaultAllowBeep,
 		AllowAddFriend: constant.DefaultAllowAddFriend,
 		RegisterType:   registerType,
+		Address:        req.User.Address,
 	}
 	if err := o.Database.RegisterUser(ctx, register, account, attribute); err != nil {
 		return nil, err

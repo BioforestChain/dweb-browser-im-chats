@@ -59,6 +59,7 @@ func DbToPbUserFullInfo(attribute *chat.Attribute) *common.UserFullInfo {
 		AllowVibration:   attribute.AllowVibration,
 		GlobalRecvMsgOpt: attribute.GlobalRecvMsgOpt,
 		RegisterType:     attribute.RegisterType,
+		Address:          attribute.Address,
 	}
 }
 func DbToPbUserFullInfoDWebAddress(attribute *entity.AttributeExpand) *common.UserFullInfo {

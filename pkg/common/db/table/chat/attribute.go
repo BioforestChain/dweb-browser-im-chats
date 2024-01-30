@@ -38,6 +38,7 @@ type Attribute struct {
 	AllowAddFriend   int32     `gorm:"column:allow_add_friend;default:1"`
 	GlobalRecvMsgOpt int32     `gorm:"column:global_recv_msg_opt;default:0"`
 	RegisterType     int32     `gorm:"column:register_type"`
+	Address          string    `gorm:"column:address;type:varchar(512)"`
 }
 
 func (Attribute) TableName() string {

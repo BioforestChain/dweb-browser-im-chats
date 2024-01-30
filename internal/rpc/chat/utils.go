@@ -15,6 +15,7 @@
 package chat
 
 import (
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/entity"
 	"github.com/OpenIMSDK/tools/utils"
 
 	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/db/table/chat"
@@ -60,7 +61,7 @@ func DbToPbUserFullInfo(attribute *chat.Attribute) *common.UserFullInfo {
 		RegisterType:     attribute.RegisterType,
 	}
 }
-func DbToPbUserFullInfoDWebAddress(attribute *chat.AttributeExpand) *common.UserFullInfo {
+func DbToPbUserFullInfoDWebAddress(attribute *entity.AttributeExpand) *common.UserFullInfo {
 	return &common.UserFullInfo{
 		UserID:           attribute.UserID,
 		Password:         "",
@@ -85,7 +86,7 @@ func DbToPbUserFullInfoDWebAddress(attribute *chat.AttributeExpand) *common.User
 func DbToPbUserFullInfos(attributes []*chat.Attribute) []*common.UserFullInfo {
 	return utils.Slice(attributes, DbToPbUserFullInfo)
 }
-func DbToPbUserFullInfosDWebAddress(attributes []*chat.AttributeExpand) []*common.UserFullInfo {
+func DbToPbUserFullInfosDWebAddress(attributes []*entity.AttributeExpand) []*common.UserFullInfo {
 	return utils.Slice(attributes, DbToPbUserFullInfoDWebAddress)
 }
 

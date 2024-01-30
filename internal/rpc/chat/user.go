@@ -19,8 +19,8 @@ import (
 	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/constant"
 	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/db/dbutil"
 	chat2 "github.com/BioforestChain/dweb-browser-im-chats/pkg/common/db/table/chat"
+	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/entity"
 	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/mctx"
-	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/util/array"
 	"github.com/BioforestChain/dweb-browser-im-chats/pkg/eerrs"
 	"github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/chat"
 	constant2 "github.com/OpenIMSDK/protocol/constant"
@@ -237,13 +237,23 @@ func (o *chatSvr) FindUserFullInfo(ctx context.Context, req *chat.FindUserFullIn
 	}
 	attributes, err := o.Database.FindAttribute(ctx, req.UserIDs)
 
-	dWebTotalUsr := make([]*chat2.AttributeExpand, len(attributes))
-	for i, usr := range attributes {
-		dWebTotalUsr[i] = &chat2.AttributeExpand{}
-		array.MapValues(usr, dWebTotalUsr[i])
+	//dWebTotalUsr := make([]*AttributeExpand, len(attributes))
+	//for i, usr := range attributes {
+	//	dWebTotalUsr[i] = &AttributeExpand{}
+	//	array.MapValues(usr, dWebTotalUsr[i])
+	//	account, _ := o.Database.GetUser(ctx, usr.UserID)
+	//	dWebTotalUsr[i].Address = account.Address
+	//}
+	dWebTotalUsr := make([]*entity.AttributeExpand, 0)
+	for _, usr := range attributes {
 		account, _ := o.Database.GetUser(ctx, usr.UserID)
-		dWebTotalUsr[i].Address = account.Address
+		expand := &entity.AttributeExpand{
+			Attribute: *usr,
+			Address:   account.Address,
+		}
+		dWebTotalUsr = append(dWebTotalUsr, expand)
 	}
+
 	if err != nil {
 		return nil, err
 	}
@@ -258,18 +268,35 @@ func (o *chatSvr) FindUserFullInfo(ctx context.Context, req *chat.FindUserFullIn
 //	@param req
 //	@return *chat.SearchUserFullInfoResp
 //	@return error
+
 func (o *chatSvr) SearchUserFullInfo(ctx context.Context, req *chat.SearchUserFullInfoReq) (*chat.SearchUserFullInfoResp, error) {
 	if _, _, err := mctx.Check(ctx); err != nil {
 		return nil, err
 	}
-	total, list, err := o.Database.SearchByAddress(ctx, req.Normal, req.Keyword, req.Genders, req.Pagination.PageNumber, req.Pagination.ShowNumber)
+	keyword := req.Keyword
+	account, err := o.Database.GetUserByAddress(ctx, req.Keyword)
+	adr := account.Address
 	if err != nil {
 		return nil, err
 	}
-
+	if len(account.UserID) > 0 {
+		keyword = account.UserID
+	}
+	total, list, err := o.Database.Search(ctx, req.Normal, keyword, req.Genders, req.Pagination.PageNumber, req.Pagination.ShowNumber)
+	if err != nil {
+		return nil, err
+	}
+	totalUserExpand := make([]*entity.AttributeExpand, 0)
+	for _, v := range list {
+		expand := &entity.AttributeExpand{
+			Attribute: *v,
+			Address:   adr,
+		}
+		totalUserExpand = append(totalUserExpand, expand)
+	}
 	return &chat.SearchUserFullInfoResp{
 		Total: total,
-		Users: DbToPbUserFullInfosDWebAddress(list),
+		Users: DbToPbUserFullInfosDWebAddress(totalUserExpand),
 	}, nil
 }
 

@@ -276,7 +276,7 @@ func (o *chatSvr) SearchUserFullInfo(ctx context.Context, req *chat.SearchUserFu
 	keyword := req.Keyword
 	account, err := o.Database.GetUserByAddress(ctx, req.Keyword)
 	adr := account.Address
-	if err != nil {
+	if err != nil && errs.ErrRecordNotFound.Is(err) {
 		return nil, err
 	}
 	if len(account.UserID) > 0 {

@@ -30,7 +30,7 @@ sed -i 's|signEndpoint: "http://{OPENIM_IP}:10005"|signEndpoint: "https://qaimap
 ```shell
 docker compose up -d
 docker ps
-docker compose logs -f dweb-im
+docker compose logs -f openim-chat
 docker compose logs -f openim-server
 ```
 

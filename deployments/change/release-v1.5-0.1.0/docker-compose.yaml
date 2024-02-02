@@ -179,7 +179,7 @@ services:
   openim-chat:
     image: wen122056/dweb-im:release-v1.5-0.1.0
       #image: ${IMAGE_REGISTRY:-ghcr.io/openimsdk}/openim-chat:${CHAT_IMAGE_VERSION:-latest}
-    container_name: dweb-im
+    container_name: openim-chat
     healthcheck:
       test: ["CMD", "/openim/openim-chat/scripts/check_all.sh"]
       interval: 60s

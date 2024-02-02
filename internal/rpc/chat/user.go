@@ -20,7 +20,6 @@ import (
 	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/db/dbutil"
 	chat2 "github.com/BioforestChain/dweb-browser-im-chats/pkg/common/db/table/chat"
 	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/mctx"
-	"github.com/BioforestChain/dweb-browser-im-chats/pkg/common/util/array"
 	"github.com/BioforestChain/dweb-browser-im-chats/pkg/eerrs"
 	"github.com/BioforestChain/dweb-browser-im-chats/pkg/proto/chat"
 	constant2 "github.com/OpenIMSDK/protocol/constant"
@@ -198,7 +197,7 @@ func (o *chatSvr) AddUserAccount(ctx context.Context, req *chat.AddUserAccountRe
 
 // SearchUserPublicInfo
 //
-//	@Description: TODO
+//	@Description:
 //	@receiver o
 //	@param ctx
 //	@param req
@@ -236,18 +235,10 @@ func (o *chatSvr) FindUserFullInfo(ctx context.Context, req *chat.FindUserFullIn
 		return nil, errs.ErrArgs.Wrap("UserIDs is empty")
 	}
 	attributes, err := o.Database.FindAttribute(ctx, req.UserIDs)
-
-	dWebTotalUsr := make([]*chat2.AttributeExpand, len(attributes))
-	for i, usr := range attributes {
-		dWebTotalUsr[i] = &chat2.AttributeExpand{}
-		array.MapValues(usr, dWebTotalUsr[i])
-		account, _ := o.Database.GetUser(ctx, usr.UserID)
-		dWebTotalUsr[i].Address = account.Address
-	}
 	if err != nil {
 		return nil, err
 	}
-	return &chat.FindUserFullInfoResp{Users: DbToPbUserFullInfosDWebAddress(dWebTotalUsr)}, nil
+	return &chat.FindUserFullInfoResp{Users: DbToPbUserFullInfos(attributes)}, nil
 }
 
 // SearchUserFullInfo
@@ -258,18 +249,31 @@ func (o *chatSvr) FindUserFullInfo(ctx context.Context, req *chat.FindUserFullIn
 //	@param req
 //	@return *chat.SearchUserFullInfoResp
 //	@return error
+
 func (o *chatSvr) SearchUserFullInfo(ctx context.Context, req *chat.SearchUserFullInfoReq) (*chat.SearchUserFullInfoResp, error) {
 	if _, _, err := mctx.Check(ctx); err != nil {
 		return nil, err
 	}
-	total, list, err := o.Database.SearchByAddress(ctx, req.Normal, req.Keyword, req.Genders, req.Pagination.PageNumber, req.Pagination.ShowNumber)
+	keyword := req.Keyword
+	//var adr string
+	if len(keyword) > 0 {
+		account, err := o.Database.GetUserByAddress(ctx, req.Keyword)
+		if err != nil && errs.ErrRecordNotFound.Is(err) {
+			return nil, err
+		}
+		//adr := account.Address
+		if len(account.UserID) > 0 {
+			keyword = account.UserID
+		}
+	}
+
+	total, list, err := o.Database.Search(ctx, req.Normal, keyword, req.Genders, req.Pagination.PageNumber, req.Pagination.ShowNumber)
 	if err != nil {
 		return nil, err
 	}
-
 	return &chat.SearchUserFullInfoResp{
 		Total: total,
-		Users: DbToPbUserFullInfosDWebAddress(list),
+		Users: DbToPbUserFullInfos(list),
 	}, nil
 }
 

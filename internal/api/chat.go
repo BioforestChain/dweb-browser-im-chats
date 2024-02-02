@@ -256,16 +256,14 @@ func (o *ChatApi) Auth(c *gin.Context) {
 		return
 	}
 	reqNew.Ip = ip
-
 	reqNew.User = &chat.RegisterUserInfo{
-		Nickname: timeStamp,
-		//PhoneNumber: "19900000000",
+		Nickname:    timeStamp,
 		PhoneNumber: timeStamp + "0",
 		Address:     address,
 		PublicKey:   publicKeyStr,
 		FaceURL:     "",
 		AreaCode:    "+86",
-		Password:    "df10ef8509dc176d733d59549e7dbfaf",
+		Password:    number.GenerateTraceId(),
 	}
 
 	userAccount, err := o.chatClient.GetUserByAddress(c, &chat.GetUserReq{Address: req.Address})

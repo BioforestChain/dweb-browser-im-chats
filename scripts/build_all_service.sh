@@ -55,7 +55,7 @@ ARCH=$(uname -m)
 if [[ "$OS" == "darwin" ]]; then
     cpu_count=$(sysctl -n hw.ncpu)
 elif [[ "$OS" == "linux" ]]; then
-    cpu_count=$(lscpu | grep -e 'CPU(s):' | awk '{print $3}')
+    cpu_count=$(lscpu | grep -e 'CPU(s):' | awk '{print $2}')
 else [[ "$OS" == "windows" ]];
     cpu_count=$(lscpu | grep -e 'CPU(s):' | awk '{print $3}')
 fi
